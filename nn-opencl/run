@@ -1,0 +1,2 @@
+#!/bin/bash
+./nn filelist.txt -t -p 0 -d 0 -r 5 -lat 30 -lng 90
