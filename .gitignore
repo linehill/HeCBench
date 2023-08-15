@@ -13,3 +13,8 @@
 *.yaml
 dpct_output
 */main
+cfd-*/density
+cfd-*/density_energy
+cfd-*/momentum
+srad-*/image_out.pgm
+data
