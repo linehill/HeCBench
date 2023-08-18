@@ -3,3 +3,12 @@ minimod-cuda
 aop-sycl
 bn-hip
 jacobi-hip
+crs-hip
+crs-sycl
+eigenvalue-sycl
+ert-hip
+ert-sycl
+bh-sycl
+bh-hip
+sheath-sycl
+sheath-hip
