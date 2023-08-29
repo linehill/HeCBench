@@ -200,7 +200,7 @@ float pspeedy(Points *points, float z, long *kcenter, int pid, pthread_barrier_t
 
 #ifdef PRINTINFO
   if( pid == 0 ){
-    fprintf(stderr, "Speedy: facility cost %lf\n", z);
+    fprintf(stdout, "Speedy: facility cost %lf\n", z);
   }
 #endif
 
@@ -306,9 +306,9 @@ float pspeedy(Points *points, float z, long *kcenter, int pid, pthread_barrier_t
 #ifdef PRINTINFO
   if( pid == 0 )
   {
-    fprintf(stderr, "Speedy opened %d facilities for total cost %lf\n",
+    fprintf(stdout, "Speedy opened %d facilities for total cost %lf\n",
         *kcenter, totalcost);
-    fprintf(stderr, "Distance Cost %lf\n", totalcost - z*(*kcenter));
+    fprintf(stdout, "Distance Cost %lf\n", totalcost - z*(*kcenter));
   }
 #endif
 
@@ -369,7 +369,7 @@ float pFL(Points *points, int *feasible, int numfeasible,
     cost -= change;
 #ifdef PRINTINFO
     if( pid == 0 ) {
-      fprintf(stderr, "%d centers, cost %lf, total distance %lf\n",
+      fprintf(stdout, "%d centers, cost %lf, total distance %lf\n",
           *k, cost, cost - z*(*k));
     }
 #endif
@@ -803,7 +803,7 @@ void streamCluster( PStream* stream,
   while(1) {
 
     size_t numRead  = stream->read(block, dim, chunksize ); 
-    fprintf(stderr,"read %zu points\n",numRead);
+    fprintf(stdout,"read %zu points\n",numRead);
 
     if( stream->ferror() || (numRead < (unsigned int)chunksize && !stream->feof()) ) {
       fprintf(stderr, "error reading data!\n");
@@ -821,7 +821,7 @@ void streamCluster( PStream* stream,
 
     localSearch(&points,kmin, kmax,&kfinal);
 
-    fprintf(stderr,"finish local search\n");
+    fprintf(stdout,"finish local search\n");
     contcenters(&points);
     if( kfinal + centers.num > centersize ) {
       //here we don't handle the situation where # of centers gets too large. 
@@ -877,19 +877,19 @@ int main(int argc, char **argv)
 #endif
 
   if (argc<9) {
-    fprintf(stderr,"usage: %s k1 k2 d n chunksize clustersize infile outfile nproc\n",
+    fprintf(stdout,"usage: %s k1 k2 d n chunksize clustersize infile outfile nproc\n",
         argv[0]);
-    fprintf(stderr,"  k1:          Min. number of centers allowed\n");
-    fprintf(stderr,"  k2:          Max. number of centers allowed\n");
-    fprintf(stderr,"  d:           Dimension of each data point\n");
-    fprintf(stderr,"  n:           Number of data points\n");
-    fprintf(stderr,"  chunksize:   Number of data points to handle per step\n");
-    fprintf(stderr,"  clustersize: Maximum number of intermediate centers\n");
-    fprintf(stderr,"  infile:      Input file (if n<=0)\n");
-    fprintf(stderr,"  outfile:     Output file\n");
-    fprintf(stderr,"  nproc:       Number of threads to use\n");
-    fprintf(stderr,"\n");
-    fprintf(stderr, "if n > 0, points will be randomly generated instead of reading from infile.\n");
+    fprintf(stdout,"  k1:          Min. number of centers allowed\n");
+    fprintf(stdout,"  k2:          Max. number of centers allowed\n");
+    fprintf(stdout,"  d:           Dimension of each data point\n");
+    fprintf(stdout,"  n:           Number of data points\n");
+    fprintf(stdout,"  chunksize:   Number of data points to handle per step\n");
+    fprintf(stdout,"  clustersize: Maximum number of intermediate centers\n");
+    fprintf(stdout,"  infile:      Input file (if n<=0)\n");
+    fprintf(stdout,"  outfile:     Output file\n");
+    fprintf(stdout,"  nproc:       Number of threads to use\n");
+    fprintf(stdout,"\n");
+    fprintf(stdout, "if n > 0, points will be randomly generated instead of reading from infile.\n");
     exit(1);
   }
   kmin = atoi(argv[1]);

@@ -12,9 +12,9 @@ static unsigned int train_cnt, test_cnt;
 
 static inline void loaddata()
 {
-  mnist_load("data/train-images.idx3-ubyte", "data/train-labels.idx1-ubyte",
+  mnist_load("../data/train-images.idx3-ubyte", "../data/train-labels.idx1-ubyte",
       &train_set, &train_cnt);
-  mnist_load("data/t10k-images.idx3-ubyte", "data/t10k-labels.idx1-ubyte",
+  mnist_load("../data/t10k-images.idx3-ubyte", "../data/t10k-labels.idx1-ubyte",
       &test_set, &test_cnt);
 }
 

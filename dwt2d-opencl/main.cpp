@@ -216,7 +216,7 @@ void Cleanup(cl_context context, cl_command_queue commandQueue,
 int getImg(char * srcFilename, unsigned char *srcImg, int inputSize)
 {
     // printf("Loading ipnput: %s\n", srcFilename);
-    char path[] = "../../data/dwt2d/";
+    char path[] = "../data/dwt2d/";
     char *newSrc = NULL;
     
     if((newSrc = (char *)malloc(strlen(srcFilename)+strlen(path)+1)) != NULL)
