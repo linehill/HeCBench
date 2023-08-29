@@ -20,8 +20,14 @@ class Benchmark:
             elif args.sycl_type == 'opencl':
                 self.MAKE_ARGS.append('CUDA=no')
                 self.MAKE_ARGS.append('HIP=no')
+                self.MAKE_ARGS.append('CC=icpx')
+                self.MAKE_ARGS.append('CXX=icpx')
         elif name.endswith('cuda'):
             self.MAKE_ARGS = ['CUDA_ARCH=sm_{}'.format(args.nvidia_sm)]
+        elif name.endswith('hip'):
+            self.MAKE_ARGS = []
+            self.MAKE_ARGS.append('CC=hipcc')
+            self.MAKE_ARGS.append('CXX=hipcc')
         else:
             self.MAKE_ARGS = []
 
@@ -68,7 +74,7 @@ class Benchmark:
 
     def run(self):
         cmd = ["./" + self.binary] + self.args
-        proc = subprocess.run(cmd, cwd=self.path, stdout=subprocess.PIPE, encoding="ascii")
+        proc = subprocess.run(cmd, cwd=self.path, stdout=subprocess.PIPE, encoding="ascii", timeout=600)
         out = proc.stdout
         if self.verbose:
             print(" ".join(cmd))
@@ -127,7 +133,7 @@ def main():
     if args.bench_data:
         bench_data = args.bench_data
     else:
-        bench_data = os.path.join(script_dir, 'benchmarks', 'subset.json') 
+        bench_data = os.path.join(script_dir, 'benchmarks', 'subset.json')
 
     with open(bench_data) as f:
         benchmarks = json.load(f)
