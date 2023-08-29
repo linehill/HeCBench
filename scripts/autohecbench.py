@@ -29,6 +29,9 @@ class Benchmark:
             flags = args.extra_compile_flags.replace(',',' ')
             self.MAKE_ARGS.append('EXTRA_CFLAGS={}'.format(flags))
 
+        if name.endswith('opencl') and args.opencl_inc_dir:
+            self.MAKE_ARGS.append('OPENCL_INC={}'.format(args.opencl_inc_dir))
+
         if args.bench_dir:
             self.path = os.path.realpath(os.path.join(args.bench_dir, name))
         else:
@@ -99,6 +102,8 @@ def main():
                         help='AMD Architecture')
     parser.add_argument('--gcc-toolchain', default='',
                         help='GCC toolchain location')
+    parser.add_argument('--opencl-inc-dir', default='/usr/include',
+                        help='Include directory with CL/cl.h')
     parser.add_argument('--extra-compile-flags', '-e', default='',
                         help='Additional compilation flags (inserted before the predefined CFLAGS)')
     parser.add_argument('--clean', '-c', action='store_true',
@@ -112,7 +117,7 @@ def main():
     parser.add_argument('--bench-fails', '-f',
                         help='List of failing benchmarks to ignore')
     parser.add_argument('bench', nargs='+',
-                        help='Either specific benchmark name or sycl, cuda, or hip')
+                        help='Either specific benchmark name or sycl, cuda, hip or opencl')
 
     args = parser.parse_args()
 
@@ -139,7 +144,7 @@ def main():
     # Build benchmark list
     benches = []
     for b in args.bench:
-        if b in ['sycl', 'cuda', 'hip']:
+        if b in ['sycl', 'cuda', 'hip', 'opencl']:
             benches.extend([Benchmark(args, k, *v)
                             for k, v in benchmarks.items()
                             if k.endswith(b) and k not in fails])
@@ -164,20 +169,24 @@ def main():
 
     for b in benches:
         try:
-            if args.verbose:
-                print("running: {}".format(b.name))
+            print("running: {}".format(b.name), flush=True)
+            time.sleep(1)
 
             if args.warmup:
                 b.run()
 
-            res = []
+            all_res = []
             for i in range(args.repeat):
-                res.append(str(b.run()))
+                all_res.append(b.run())
+            # take the minimum result
+            res = str(min(all_res))
 
-            print(b.name + "," + ", ".join(res), file=outfile)
+            print(b.name + "," + res, file=outfile)
         except Exception as err:
-            print("Error running: ", b.name)
-            print(err)
+            print("Error running: {}".format(b.name), flush=True)
+            print(err, flush=True)
+            time.sleep(1)
+
 
     if args.output:
         outfile.close()
