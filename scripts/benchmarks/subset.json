@@ -1257,5 +1257,333 @@
       "100",
       "10"
     ]
+  ],
+
+
+
+
+
+
+  "b+tree-sycl": [
+    "(?:Kernel execution time: )([0-9.]+)",
+    [],
+    "run"
+  ],
+  "cfd-sycl": [
+    "(?:Total execution time of kernels = )([0-9.]+)(?:\\(s\\))",
+    [],
+    "run"
+  ],
+  "dwt2d-sycl": [
+    "(?:Device offloading time = )([0-9.]+)",
+    ["-f", "-5", "-l", "3"],
+    "run"
+  ],
+  "heartwall-sycl": [
+    "([0-9.]+)(?: s, [0-9.]+ : GPU ALLOCATION)",
+    [ "100" ],
+    "run"
+  ],
+  "hotspot-sycl": [
+    "(?:Total kernel execution time )([0-9.]+)",
+    [ "512", "4", "16000" ],
+    "run"
+  ],
+  "hotspot3D-sycl": [
+    "(?:Device offloading time: )([0-9.]+)",
+    [ "512", "8", "4000" ],
+    "run"
+  ],
+  "hybridsort-sycl": [
+    "(?:GPU execution time: )([0-9.]+)",
+    ["r"],
+    "run"
+  ],
+  "kmeans-sycl": [
+    "(?:Kmeans core timing: )([0-9.]+)",
+    [],
+    "run"
+  ],
+  "lud-sycl": [
+    "(?:Total kernel execution time : )([0-9.]+)",
+    ["-s", "4096", "-v"],
+    "run"
+  ],
+  "myocyte-sycl": [
+    "([0-9.]+)(?: s, [0-9.]+ % : RUN COMPUTATION)",
+    [ "100"],
+    "run"
+  ],
+  "nw-sycl": [
+    "(?:Total kernel execution time: )([0-9.]+)",
+    ["16384", "24"],
+    "run"
+  ],
+  "srad-sycl": [
+    "([0-9.]+)(?: s,\\s+[0-9.]+ % : COMPUTE)",
+    ["100", "0.5", "2048", "2048"],
+    "run"
+  ],
+  "streamcluster-sycl": [
+    "(?:GPU kernels = )([0-9.]+)",
+    ["10", "20", "256", "65536", "65536", "1000", "none", "output.txt", "1"],
+    "run"
+  ],
+
+
+
+  "b+tree-hip": [
+    "(?:Kernel execution time: )([0-9.]+)",
+    [],
+    "run"
+  ],
+  "bfs-hip": [
+    "(?:Total kernel execution time : )([0-9.]+)",
+    [],
+    "run"
+  ],
+  "cfd-hip": [
+    "(?:Total execution time of kernels = )([0-9.]+)(?:\\(s\\))",
+    [],
+    "run"
+  ],
+  "heartwall-hip": [
+    "([0-9.]+)(?: s, [0-9.]+ : GPU ALLOCATION)",
+    [ "100" ],
+    "run"
+  ],
+  "hotspot-hip": [
+    "(?:Total kernel execution time )([0-9.]+)",
+    [ "512", "4", "16000" ],
+    "run"
+  ],
+  "hotspot3D-hip": [
+    "(?:Device offloading time: )([0-9.]+)",
+    [ "512", "8", "4000" ],
+    "run"
+  ],
+  "hybridsort-hip": [
+    "(?:GPU execution time: )([0-9.]+)",
+    ["r"],
+    "run"
+  ],
+  "kmeans-hip": [
+    "(?:Kmeans core timing: )([0-9.]+)",
+    [],
+    "run"
+  ],
+  "lud-hip": [
+    "(?:Total kernel execution time : )([0-9.]+)",
+    ["-s", "4096", "-v"],
+    "run"
+  ],
+  "nw-hip": [
+    "(?:Total kernel execution time: )([0-9.]+)",
+    ["16384", "24"],
+    "run"
+  ],
+  "nn-hip": [
+    "(?:Average kernel execution time: )([0-9.]+)",
+    ["-r", "5", "-lat", "30", "-lng", "90", "-i", "100" ],
+    "run"
+  ],
+  "srad-hip": [
+    "([0-9.]+)(?: s,\\s+[0-9.]+ % : COMPUTE)",
+    ["100", "0.5", "2048", "2048"],
+    "run"
+  ],
+  "streamcluster-hip": [
+    "(?:GPU kernels = )([0-9.]+)",
+    ["10", "20", "256", "65536", "65536", "1000", "none", "output.txt", "1"],
+    "run"
+  ],
+
+
+
+  "b+tree-cuda": [
+    "(?:Kernel execution time: )([0-9.]+)",
+    [],
+    "run"
+  ],
+  "bfs-cuda": [
+    "(?:Total kernel execution time : )([0-9.]+)",
+    [],
+    "run"
+  ],
+  "cfd-cuda": [
+    "(?:Total execution time of kernels = )([0-9.]+)(?:\\(s\\))",
+    [],
+    "run"
+  ],
+  "heartwall-cuda": [
+    "([0-9.]+)(?: s, [0-9.]+ : GPU ALLOCATION)",
+    [ "100" ],
+    "run"
+  ],
+  "hotspot-cuda": [
+    "(?:Total kernel execution time )([0-9.]+)",
+    [ "512", "4", "16000" ],
+    "run"
+  ],
+  "hotspot3D-cuda": [
+    "(?:Device offloading time: )([0-9.]+)",
+    [ "512", "8", "4000" ],
+    "run"
+  ],
+  "hybridsort-cuda": [
+    "(?:GPU execution time: )([0-9.]+)",
+    ["r"],
+    "run"
+  ],
+  "kmeans-cuda": [
+    "(?:Kmeans core timing: )([0-9.]+)",
+    [],
+    "run"
+  ],
+  "lud-cuda": [
+    "(?:Total kernel execution time : )([0-9.]+)",
+    ["-s", "1024", "-v"],
+    "run"
+  ],
+  "nw-cuda": [
+    "(?:Total kernel execution time: )([0-9.]+)",
+    ["16384", "24"],
+    "run"
+  ],
+  "nn-cuda": [
+    "(?:Average kernel execution time: )([0-9.]+)",
+    ["-r", "5", "-lat", "30", "-lng", "90", "-i", "100" ],
+    "run"
+  ],
+  "srad-cuda": [
+    "([0-9.]+)(?: s,\\s+[0-9.]+ % : COMPUTE)",
+    ["100", "0.5", "2048", "2048"],
+    "run"
+  ],
+  "streamcluster-cuda": [
+    "(?:GPU kernels = )([0-9.]+)",
+    ["10", "20", "256", "65536", "65536", "1000", "none", "output.txt", "1"],
+    "run"
+  ],
+
+
+
+
+  "backprop-opencl": [
+    "(?:Device offloading time = )([0-9.]+)(?:\\(s\\))",
+    [
+      "12802400"
+    ],
+    "run"
+  ],
+  "b+tree-opencl": [
+    "([0-9.]+)(?: s,\\s+[0-9.]+ % : GPU: KERNEL)",
+    [],
+    "run"
+  ],
+  "cfd-opencl": [
+    "(?:Total execution time of kernels = )([0-9.]+)(?:\\(s\\))",
+    [],
+    "run"
+  ],
+  "hotspot-opencl": [
+    "(?:Total execution time of kernels = )([0-9.]+)(?:\\(s\\))",
+    [ "512", "4", "16000" ],
+    "run"
+  ],
+  "hotspot3D-opencl": [
+    "(?:Time:\\s+)([0-9.]+)",
+    [ "512", "8", "4000" ],
+    "run"
+  ],
+  "leukocyte-opencl": [
+    "(?:MGVF computation: )([0-9.]+)(?: seconds)",
+    ["10"],
+    "run"
+  ],
+  "lud-opencl": [
+    "(?:Total kernel execution time : )([0-9.]+)(?:\\(s\\))",
+    ["-s", "4096", "-v"],
+    "run"
+  ],
+  "nw-opencl": [
+    "(?:Total execution time of kernels = )([0-9.]+)(?:\\(s\\))",
+    ["16384", "24"],
+    "run"
+  ],
+  "srad-opencl": [
+    "([0-9.]+)(?: s, )(?:[0-9.]+)(?: % : KERNEL)",
+    ["100", "0.5", "2048", "2048"],
+    "run"
+  ],
+  "streamcluster-opencl": [
+    "(?:time kernel = )([0-9.]+)",
+    ["10", "20", "256", "65536", "65536", "1000", "none", "output.txt", "1"],
+    "run"
+  ],
+  "particlefilter-opencl": [
+    "(?:GPU Execution: )([0-9.]+)",
+    [
+      "-x",
+      "512",
+      "-y",
+      "512",
+      "-z",
+      "20",
+      "-np",
+      "92000"
+    ],
+    "run"
+  ],
+  "gaussian-opencl": [
+    "(?:Kernel time: )([0-9.]+)",
+    [
+      "-s",
+      "4000",
+      "-t", "-q"
+    ],
+    "run"
+  ],
+  "heartwall-opencl": [
+    "([0-9.]+)(?: s, [0-9.]+ % : GPU ALLOCATION)",
+    [ "100" ],
+    "run"
+  ],
+  "myocyte-opencl": [
+    "([0-9.]+)(?: s, [0-9.]+ % : GPU: COMPUTATION)",
+    ["-time", "100"],
+    "run"
+  ],
+  "kmeans-opencl": [
+    "(?:Total execution time of kernels = )([0-9.]+)(?:\\(s\\))",
+    [],
+    "run"
+  ],
+  "pathfinder-opencl": [
+    "(?:Total execution time of kernels = )([0-9.]+)(?:\\(s\\))",
+    [
+      "100000",
+      "1000",
+      "20"
+    ],
+    "run"
+  ],
+  "lavaMD-opencl": [
+    "([0-9.]+)(?: s,\\s+[0-9.]+ % : GPU: KERNEL)",
+    [
+      "-boxes1d",
+      "64"
+    ],
+    "run"
+  ],
+  "dwt2d-opencl": [
+    "(?:Total execution time of kernels = )([0-9.]+)",
+    ["-f", "-5", "-l", "3"],
+    "run"
+  ],
+  "hybridsort-opencl": [
+    "(?:Histogram Kernel Time: )([0-9.]+)",
+    ["r"],
+    "run"
   ]
 }
