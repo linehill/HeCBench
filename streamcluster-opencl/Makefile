@@ -1,7 +1,7 @@
 include ../../common/make.config
 
 SRC = streamcluster.cpp
-EXE = streamcluster
+EXE = main
 
 $(EXE):$(SRC)
 	$(CXX) $(CXX_FLAGS)  $(SRC) -o $(EXE) $(OCL_CPPFLAGS) $(OCL_LDFLAGS)

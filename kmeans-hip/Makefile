@@ -16,10 +16,10 @@ ifeq ($(OPTIMIZE),yes)
   CFLAGS += -O3
 endif
 
-all: kmeans
+all: main
 
-kmeans: cluster.o getopt.o read_input.o rmse.o kmeans.cpp
-	$(CC) $(KERNEL_DIM) $(CFLAGS) $^ -o kmeans $(LDFLAGS)
+main: cluster.o getopt.o read_input.o rmse.o kmeans.cpp
+	$(CC) $(KERNEL_DIM) $(CFLAGS) $^ -o main $(LDFLAGS)
 
 %.o: %.cpp
 	$(CC) $(CFLAGS) $< -c
@@ -34,9 +34,7 @@ read_input.o: read_input.cpp kmeans.h
 rmse.o: rmse.cpp kmeans.h
 
 clean:
-	rm -f *.o *~ kmeans *.linkinfo
+	rm -f *.o *~ main *.linkinfo
 
-run: kmeans
-	./kmeans -r -n 5 -m 15 -l 10 -o -i ../data/kmeans/kdd_cup
-
-
+run: main
+	./main -r -n 5 -m 15 -l 10 -o -i ../data/kmeans/kdd_cup

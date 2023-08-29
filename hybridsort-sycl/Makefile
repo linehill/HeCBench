@@ -84,8 +84,8 @@ endif
 # Targets to Build
 #===============================================================================
 
-hybridsort: hybridsort.o bucketsort.o mergesort.o
-	$(CC) $(CFLAGS) -o hybridsort $(VERIFY) $(OUTPUT) $(TIMER) \
+main: hybridsort.o bucketsort.o mergesort.o
+	$(CC) $(CFLAGS) -o main $(VERIFY) $(OUTPUT) $(TIMER) \
 		hybridsort.o bucketsort.o mergesort.o $(LDFLAGS)
 
 hybridsort.o : hybridsort.c mergesort.h bucketsort.h
@@ -101,8 +101,8 @@ bucketsort.o: bucketsort.c \
 mergesort.o: mergesort.c mergesort.h kernel_mergeSortPass.sycl
 	$(CC) $(CFLAGS) -o mergesort.o -c mergesort.c 
 
-run: hybridsort
-	./hybridsort r
-
 clean:
-	rm -f  *.o hybridsort
+	rm -f  *.o main
+
+run: main
+	./main r

@@ -1,7 +1,7 @@
 include ../../common/make.config
 
 
-b+tree:	./main.o \
+main:	./main.o \
 		./kernel/kernel_gpu_opencl_wrapper.o \
 		./kernel/kernel_gpu_opencl_wrapper_2.o \
 		./util/timer/timer.o \
@@ -13,7 +13,7 @@ b+tree:	./main.o \
 			./util/timer/timer.o \
 			./util/num/num.o \
 			./util/opencl/opencl.o \
-			-lm $(OCL_LDFLAGS) -o b+tree
+			-lm $(OCL_LDFLAGS) -o main
 
 main.o:	./common.h \
 		./main.h \
@@ -73,7 +73,7 @@ main.o:	./common.h \
 # ========================================================================================================================================================================================================200
 
 clean:
-	rm -f   *.o b+tree \
+	rm -f   *.o main \
 		./kernel/*.o \
 		./util/timer/*.o \
 		./util/num/*.o \

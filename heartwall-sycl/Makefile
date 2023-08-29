@@ -85,7 +85,7 @@ endif
 # Targets to Build
 #===============================================================================
 
-heartwall:./main.o \
+main:     ./main.o \
           ./kernel/kernel.o \
           ./util/avi/avilib.o \
           ./util/avi/avimod.o \
@@ -97,7 +97,7 @@ heartwall:./main.o \
 		./util/avi/avimod.o \
 		./util/file/file.o \
 		./util/timer/timer.o \
-		$(LDFLAGS) -o heartwall
+		$(LDFLAGS) -o main
 
 # ======================================================================================================================================================150
 #	MAIN FUNCTION
@@ -141,12 +141,12 @@ heartwall:./main.o \
 		-o ./util/timer/timer.o 
 
 clean:
-	rm	-rf *.o heartwall \
+	rm	-rf *.o main \
 		./kernel/*.o \
 		./util/avi/*.o \
 		./util/file/*.o \
 		./util/timer/*.o 
 
-run: heartwall
-	./heartwall 104
 
+run: main
+	./main 104

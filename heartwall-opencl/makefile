@@ -4,8 +4,9 @@ ifdef OUTPUT
 override OUTPUT = -DOUTPUT
 endif
 
+EXE = main
 
-./heartwall:	./main.o \
+$(EXE):	./main.o \
 			./kernel/kernel_gpu_opencl_wrapper.o \
 			./util/avi/avilib.o \
 			./util/avi/avimod.o \
@@ -19,7 +20,7 @@ endif
 			./util/file/file.o \
 			./util/timer/timer.o \
 			./util/opencl/opencl.o \
-			-lm $(OCL_LDFLAGS) -o heartwall
+			-lm $(OCL_LDFLAGS) -o $(EXE)
 
 # ======================================================================================================================================================150
 #	MAIN FUNCTION
@@ -78,7 +79,7 @@ endif
 			$(OCL_CPPFLAGS)
 
 clean:
-	rm -f *.o heartwall \
+	rm -f *.o $(EXE) \
 		./kernel/*.o \
 		./util/avi/*.o \
 		./util/file/*.o \

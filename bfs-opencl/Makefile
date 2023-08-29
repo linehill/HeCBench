@@ -2,9 +2,9 @@ include ../../common/make.config
 
 SRC = bfs.cpp timer.cc
 
-EXE = bfs
+EXE = main
 
-bfs: $(SRC)
+$(EXE): $(SRC)
 	$(CXX) $(CXX_FLAGS) -fopenmp $(SRC) -o $(EXE) $(OCL_CPPFLAGS) $(OCL_LDFLAGS)
 
 profile:$(SRC)

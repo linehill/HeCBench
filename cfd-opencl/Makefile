@@ -2,7 +2,7 @@ include ../../common/make.config
 
 SRC = euler3d.cpp
 
-EXE = euler3d
+EXE = main
 
 $(EXE):$(SRC)
 	$(CXX) $(CXX_FLAGS) $(KERNEL_DIM) $(SRC) -o $(EXE) $(OCL_CPPFLAGS) $(OCL_LDFLAGS) $(FLAGS)

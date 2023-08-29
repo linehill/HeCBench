@@ -7,8 +7,10 @@ endif
 OMP_LIB = -lgomp
 OMP_FLAG = -fopenmp
 
+EXE = main
+
 # link objects together
-lavaMD:		main.o \
+$(EXE):		main.o \
 			./kernel/kernel_gpu_opencl_wrapper.o \
 			./util/num/num.o \
 			./util/timer/timer.o \
@@ -19,7 +21,7 @@ lavaMD:		main.o \
 			./util/timer/timer.o \
 			./util/opencl/opencl.o \
 			-lm $(OCL_LDFLAGS) \
-			-o lavaMD
+			-o $(EXE)
 
 # compile function files into objects
 main.o:		main.h \
@@ -61,7 +63,7 @@ main.o:		main.h \
 
 # delete all object and executable files
 clean:
-	rm	*.o lavaMD \
+	rm	*.o $(EXE) \
 		./kernel/*.o \
 		./util/num/*.o \
 		./util/timer/*.o \

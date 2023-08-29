@@ -1,5 +1,10 @@
 include ../../common/make.config
 
+EXE = main
+
+$(EXE): ex_particle_OCL_single_seq.o
+	$(CXX) ex_particle_OCL_single_seq.o $(OCL_LDFLAGS) -o $(EXE) -lm
+
 
 ALL: OCL_particlefilter_naive OCL_particlefilter_double OCL_particlefilter_single
 

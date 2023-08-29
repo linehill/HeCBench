@@ -1,6 +1,6 @@
 include ../../common/make.config
 
-EXE = nw
+EXE = main
 
 $(EXE): nw.cpp
 	$(CXX) ${KERNEL_DIM} $(CXX_FLAGS) $(OCL_CPPFLAGS) -o $(EXE) nw.cpp $(OCL_LDFLAGS)

@@ -1,7 +1,7 @@
 include ../../common/make.config
 
-backprop: backprop.o imagenet.o facetrain.o
-	$(CXX) $(CXX_FLAGS) backprop_ocl.cpp backprop.o imagenet.o facetrain.o -o backprop $(OCL_CPPFLAGS) $(OCL_LDFLAGS)
+main: backprop.o imagenet.o facetrain.o backprop_kernel.cl  backprop_ocl.cpp
+	$(CXX) $(CXX_FLAGS) backprop_ocl.cpp backprop.o imagenet.o facetrain.o -o main $(OCL_CPPFLAGS) $(OCL_LDFLAGS)
 
 backprop.o: backprop.c 
 	$(CC) $(CC_FLAGS) backprop.c -c
@@ -13,4 +13,4 @@ imagenet.o: imagenet.c
 	$(CC) $(CC_FLAGS) imagenet.c -c
 
 clean:
-	rm -f *.o *~ backprop *.linkinfo
+	rm -f *.o *~ main *.linkinfo

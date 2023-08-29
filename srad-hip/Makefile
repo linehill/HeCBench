@@ -10,7 +10,7 @@ DEBUG       = no
 #===============================================================================
 # Program name & source code list
 #===============================================================================
-program = srad
+program = main
 
 source = main.cu
 
@@ -52,7 +52,7 @@ $(program): $(obj) Makefile
 
 # delete all object files
 clean:
-	rm -f *.o srad *pgm
+	rm -f *.o $(program) *pgm
 
 run: $(program)
 	./$(program) 1000 0.5 502 458

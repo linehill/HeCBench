@@ -76,7 +76,7 @@ endif
 # Targets to Build
 #===============================================================================
 
-leukocyte: detect_main.o \
+main: detect_main.o \
 	avilib.o \
 	track_ellipse.o \
 	track_ellipse_sycl.o \
@@ -84,7 +84,7 @@ leukocyte: detect_main.o \
 	misc_math.o \
 	helper.o \
 	$(MATRIX_DIR)/meschach.a
-	$(CC) $(CFLAGS) -o leukocyte avilib.o \
+	$(CC) $(CFLAGS) -o main avilib.o \
 		track_ellipse.o \
 		track_ellipse_sycl.o \
 		find_ellipse.o \
@@ -113,8 +113,8 @@ $(MATRIX_DIR)/meschach.a:
 	cd $(MATRIX_DIR); make cleanup; make all CC=$(CC) CFLAGS=-O3; make clean
 
 clean:
-	rm -f *.o leukocyte 
+	rm -f *.o main
 	cd $(MATRIX_DIR); make cleanup
 
-run: leukocyte
-	./leukocyte ../data/leukocyte/testfile.avi 100
+run: main
+	./main ../data/leukocyte/testfile.avi 100
