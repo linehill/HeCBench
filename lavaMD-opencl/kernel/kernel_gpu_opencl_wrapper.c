@@ -36,7 +36,7 @@ extern "C" {
 //	KERNEL_GPU_OPENCL_WRAPPER FUNCTION
 //========================================================================================================================================================================================================200
 
-void 
+uint64_t
 kernel_gpu_opencl_wrapper(	par_str par_cpu,
 							dim_str dim_cpu,
 							box_str* box_cpu,
@@ -397,6 +397,10 @@ kernel_gpu_opencl_wrapper(	par_str par_cpu,
 	if (error != CL_SUCCESS) 
 		fatal_CL(error, __LINE__);
 
+	error = clFinish(command_queue);
+	if (error != CL_SUCCESS) 
+		fatal_CL(error, __LINE__);
+
 	time3 = get_time();
 
 	//======================================================================================================================================================150
@@ -529,6 +533,7 @@ kernel_gpu_opencl_wrapper(	par_str par_cpu,
 	printf("Total time:\n");
 	printf("%.12f s\n", 												(float) (time6-time0) / 1000000);
 
+        return (time4 - time3);
 }
 
 //========================================================================================================================================================================================================200

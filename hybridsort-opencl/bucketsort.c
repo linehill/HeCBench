@@ -370,14 +370,6 @@ void histogram1024GPU(unsigned int *h_Result, float *d_Data, float minimum, floa
         exit(1);
     }
     clFinish(histoCommands);
-    
-    cl_ulong time_start, time_end;
-    double total_time;
-    clGetEventProfilingInfo(histoEvent, CL_PROFILING_COMMAND_START, sizeof(time_start), &time_start, NULL);
-    clGetEventProfilingInfo(histoEvent, CL_PROFILING_COMMAND_END, sizeof(time_end), &time_end, NULL);
-    total_time = (time_end - time_start) / 1000000.0;
-    sum+= total_time;
-    printf("Histogram Kernel Time: %0.6lf \n", total_time);
 }
 
 void finish_histogram() {
@@ -400,7 +392,7 @@ void bucketSort(float *d_input, float *d_output, int listsize,
 //	// First pass - Create 1024 bin histogram
 //	////////////////////////////////////////////////////////////////////////////
     histogramInit(listsize);
-	histogram1024GPU(h_offsets, d_input, minimum, maximum, listsize);
+    histogram1024GPU(h_offsets, d_input, minimum, maximum, listsize);
     finish_histogram();
     for(int i=0; i<histosize; i++) historesult[i] = (float)h_offsets[i];
 
@@ -475,14 +467,6 @@ void bucketSort(float *d_input, float *d_output, int listsize,
         exit(1);
     }
     clFinish(bucketCommands);
-    cl_ulong time_start, time_end;
-    double total_time;
-    clGetEventProfilingInfo(bucketCountEvent, CL_PROFILING_COMMAND_START, sizeof(time_start), &time_start, NULL);
-    clGetEventProfilingInfo(bucketCountEvent, CL_PROFILING_COMMAND_END, sizeof(time_end), &time_end, NULL);
-    total_time = (time_end - time_start) / 1000000.0;
-    sum+= total_time;
-    printf("Bucket Count Kernel Time: %0.6lf \n", total_time);
-    
 
 //
 //	///////////////////////////////////////////////////////////////////////////
@@ -540,11 +524,7 @@ void bucketSort(float *d_input, float *d_output, int listsize,
         exit(1);
     }
     clFinish(bucketCommands);
-    clGetEventProfilingInfo(bucketPrefixEvent, CL_PROFILING_COMMAND_START, sizeof(time_start), &time_start, NULL);
-    clGetEventProfilingInfo(bucketPrefixEvent, CL_PROFILING_COMMAND_END, sizeof(time_end), &time_end, NULL);
-    total_time = (time_end - time_start) / 1000000.0;
-    sum+= total_time;
-    printf("Bucket Prefix Kernel Time: %0.6lf \n", total_time);
+
 //	// copy the sizes from device to host
 	origOffsets[0] = 0;
 	for(int i=0; i<DIVISIONS; i++){
@@ -630,13 +610,7 @@ void bucketSort(float *d_input, float *d_output, int listsize,
     {
         printf("Error: Failed to read d_output array! %d\n", err);
     }
-     clWaitForEvents(1 , &bucketSortEvent);
     clFinish(bucketCommands);
-    clGetEventProfilingInfo(bucketSortEvent, CL_PROFILING_COMMAND_START, sizeof(time_start), &time_start, NULL);
-    clGetEventProfilingInfo(bucketSortEvent, CL_PROFILING_COMMAND_END, sizeof(time_end), &time_end, NULL);
-    total_time = (time_end - time_start) / 1000000.0;
-    sum+= total_time;
-    printf("Bucket Sort Kernel Time: %0.6lf \n", total_time);
 
 }
 double getBucketTime() {

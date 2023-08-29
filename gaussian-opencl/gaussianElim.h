@@ -10,6 +10,7 @@
 #include <algorithm>
 
 #include "clutils.h"
+#include "utils.h"
 
 // All OpenCL headers
 #if defined (__APPLE__) || defined(MACOSX)

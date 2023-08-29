@@ -73,6 +73,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 #include <limits.h>
 #include <math.h>
 #include <fcntl.h>
@@ -83,6 +84,17 @@
 
 extern double wtime(void);
 
+#ifdef WIN
+        #include <windows.h>
+#else
+        #include <pthread.h>
+        #include <sys/time.h>
+        long long get_time() {
+                struct timeval t;
+                gettimeofday(&t,NULL);
+                return t.tv_sec*1000000 + t.tv_usec;
+        }
+#endif
 
 
 /*---< usage() >------------------------------------------------------------*/
@@ -235,9 +247,9 @@ int setup(int argc, char **argv) {
 
 	/* ======================= core of the clustering ===================*/
 
-    //cluster_timing = omp_get_wtime();		/* Total clustering time */
+        uint64_t cluster_start = get_time();		/* Total clustering time */
 	cluster_centres = NULL;
-    index = cluster(npoints,				/* number of data points */
+        index = cluster(npoints,				/* number of data points */
 					nfeatures,				/* number of features for each point */
 					features,				/* array: [npoints][nfeatures] */
 					min_nclusters,			/* range of min to max number of clusters */
@@ -249,8 +261,9 @@ int setup(int argc, char **argv) {
 					isRMSE,					/* calculate RMSE */
 					nloops);				/* number of iteration for each number of clusters */		
     
-	//cluster_timing = omp_get_wtime() - cluster_timing;
-
+	uint64_t cluster_diff = get_time() - cluster_start;
+        float cluster_ms = (float)cluster_diff / 1000.0f;
+        printf("Kmeans core timing: %0.3f\n", cluster_ms);
 
 	/* =============== Command Line Output =============== */
 

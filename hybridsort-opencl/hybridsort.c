@@ -16,9 +16,12 @@
 #include <CL/cl.h>
 #include "bucketsort.h"
 #include "mergesort.h"
-#include <time.h>
-/* #define VERIFY Y */
-/* #define TIMER Y */
+#include "./timer/timer.h"
+
+#define VERIFY Y
+#define TIMER Y
+
+
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -111,15 +114,6 @@ int main(int argc, char** argv)
         //Same as above but for maximum
 	datamax = fmaxf(cpu_idata[i], datamax);
 	}
-/*
-	FILE *tp;
-	const char filename2[]="./hybridinput.txt";
-	tp = fopen(filename2,"w");
-	for(int i = 0; i < SIZE; i++) {
-	  fprintf(tp,"%f ",cpu_idata[i]);
-	}
-	fclose(tp);
-*/
     } else {
         FILE *fp;
         fp = fopen(argv[1],"r");
@@ -131,16 +125,18 @@ int main(int argc, char** argv)
 	fclose(fp);
     }
     memcpy(cpu_odata, cpu_idata, mem_size);
-    clock_t gpu_start = clock();
+    uint64_t gpu_start = get_time();
+
     init_bucketsort(numElements);
     int *sizes = (int*) malloc(DIVISIONS * sizeof(int));
     int *nullElements = (int*) malloc(DIVISIONS * sizeof(int));
     unsigned int *origOffsets = (unsigned int *) malloc((DIVISIONS + 1) * sizeof(int));
-    clock_t bucketsort_start = clock();
+
+    uint64_t bucketsort_start = get_time();
     bucketSort(cpu_idata,d_output,numElements,sizes,nullElements,datamin,datamax, origOffsets);
-    clock_t bucketsort_diff = clock() - bucketsort_start;
+    uint64_t bucketsort_diff = get_time() - bucketsort_start;
+
     finish_bucketsort();
-    double bucketTime = getBucketTime();
 
     cl_float4 *d_origList = (cl_float4*) d_output;
     cl_float4 *d_resultList = (cl_float4*) cpu_idata;
@@ -149,31 +145,31 @@ int main(int argc, char** argv)
     for(int i = 0; i < DIVISIONS; i++){
         newlistsize += sizes[i] * 4;
     }
-    
+
     init_mergesort(newlistsize);
-    clock_t mergesort_start = clock();
+    uint64_t mergesort_start = get_time();
     cl_float4 *mergeresult = runMergeSort(newlistsize,DIVISIONS,d_origList,d_resultList,sizes,nullElements,origOffsets);
-    clock_t mergesort_diff = clock() - mergesort_start;
+    uint64_t mergesort_diff = get_time() - mergesort_start;
     finish_mergesort();
     gpu_odata = (float*)mergeresult;
-#ifdef TIMER
-    clock_t gpu_diff = clock() - gpu_start;
-    int gpu_msec = gpu_diff * 1000 / CLOCKS_PER_SEC;
-    int bucketsort_msec = bucketsort_diff * 1000 / CLOCKS_PER_SEC;
-    int mergesort_msec = mergesort_diff * 1000 / CLOCKS_PER_SEC;
-    double mergeTime = getMergeTime();
 
-    printf("GPU execution time: %0.3f ms  \n", bucketsort_msec+mergesort_msec+bucketTime+mergeTime);
-    printf("  --Bucketsort execution time: %0.3f ms \n", bucketsort_msec+bucketTime);
-    printf("  --Mergesort execution time: %0.3f ms \n", mergesort_msec+mergeTime);
+#ifdef TIMER
+    uint64_t gpu_diff = get_time() - gpu_start;
+    float gpu_msec = (float)gpu_diff / 1000.0f;
+    float bucketsort_msec = (float)bucketsort_diff / 1000.0f;
+    float mergesort_msec = (float)mergesort_diff / 1000.0f;
+
+    printf("GPU execution time: %0.3f ms  \n", bucketsort_msec+mergesort_msec);
+    printf("  --Bucketsort execution time: %0.3f ms \n", bucketsort_msec);
+    printf("  --Mergesort execution time: %0.3f ms \n", mergesort_msec);
 #endif
 #ifdef VERIFY
-    clock_t cpu_start = clock(), cpu_diff;
+    uint64_t cpu_start = get_time(), cpu_diff;
     
     qsort(cpu_odata, numElements, sizeof(float), compare);
-    cpu_diff = clock() - cpu_start;
-    int cpu_msec = cpu_diff * 1000 / CLOCKS_PER_SEC;
-    printf("CPU execution time: %d ms  \n", cpu_msec);
+    cpu_diff = get_time() - cpu_start;
+    float cpu_msec = (float)cpu_diff / 1000.0f;
+    printf("CPU execution time: %0.3f ms  \n", cpu_msec);
     printf("Checking result...");
     
 	// Result checking

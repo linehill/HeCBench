@@ -1,3 +1,6 @@
+
+#include <stdint.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -6,7 +9,7 @@ extern "C" {
 //	KERNEL_GPU_OPENCL_WRAPPER HEADER
 //========================================================================================================================================================================================================200
 
-void 
+uint64_t
 kernel_gpu_opencl_wrapper(	par_str parms_cpu,
 							dim_str dim_cpu,
 							box_str* box_cpu,

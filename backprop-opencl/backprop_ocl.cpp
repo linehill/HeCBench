@@ -137,6 +137,8 @@ int bpnn_train_kernel(BPNN *net, float *eo, float *eh)
 	if(err != CL_SUCCESS) { printf("ERROR: clCreateKernel() 0 => %d\n", err); return -1; }
 	clReleaseProgram(prog);
 	
+        double start1 = gettime();
+
 	float *input_weights_one_dim;
     float *input_weights_prev_one_dim;
 	float * partial_sum;
@@ -184,8 +186,6 @@ int bpnn_train_kernel(BPNN *net, float *eo, float *eh)
 		
 	printf("Performing GPU computation\n");
 
-        uint64_t start1 = gettime();
-
 	//write buffers
 	err = clEnqueueWriteBuffer(cmd_queue, input_ocl, 1, 0, (in + 1) * sizeof(float), net->input_units, 0, 0, 0);
 	if(err != CL_SUCCESS) { printf("ERROR: clEnqueueWriteBuffer input_ocl\n"); return -1; }
@@ -207,8 +207,6 @@ int bpnn_train_kernel(BPNN *net, float *eo, float *eh)
 	err = clEnqueueReadBuffer(cmd_queue, hidden_partial_sum, 1, 0, num_blocks * WIDTH * sizeof(float), partial_sum, 0, 0, 0);
 	if(err != CL_SUCCESS) { printf("ERROR: 1  clEnqueueReadBuffer: partial sum\n"); return -1; }	
 
-        uint64_t finish1 = gettime();
-  
 	for (int j = 1; j <= hid; j++) {
 		sum = 0.0;
 		for (int k = 0; k < num_blocks; k++) {	
@@ -223,8 +221,6 @@ int bpnn_train_kernel(BPNN *net, float *eo, float *eh)
 	bpnn_output_error(net->output_delta, net->target, net->output_units, out, &out_err);
 	bpnn_hidden_error(net->hidden_delta, hid, net->output_delta, out, net->hidden_weights, net->hidden_units, &hid_err);  
 	bpnn_adjust_weights(net->output_delta, out, net->hidden_units, hid, net->hidden_weights, net->hidden_prev_weights);
-
-        uint64_t start2 = gettime();
 
 	err = clEnqueueWriteBuffer(cmd_queue, hidden_delta_ocl,       1, 0, (hid + 1) * sizeof(float), net->hidden_delta, 0, 0, 0);
 	if(err != CL_SUCCESS) { printf("ERROR: clEnqueueWriteBuffer hidden_delta_ocl\n"); return -1; }
@@ -248,10 +244,10 @@ int bpnn_train_kernel(BPNN *net, float *eo, float *eh)
 	err = clEnqueueReadBuffer(cmd_queue, input_hidden_ocl, 1, 0, (in + 1) * (hid + 1) * sizeof(float), input_weights_one_dim, 0, 0, 0);
 	if(err != CL_SUCCESS) { printf("ERROR: 1  clEnqueueReadBuffer: input_hidden_ocl\n"); return -1; }	
 
-        uint64_t finish2 = gettime();
+        double finish1 = gettime();
 
-        uint64_t total = (finish1 - start1) + (finish2 - start2);
-        printf("Device offloading time = %lu(s)\n", total);
+        double total = (finish1 - start1);
+        printf("Device offloading time = %.9lf(s)\n", total);
 
 	clReleaseMemObject(input_ocl);
 	clReleaseMemObject(output_hidden_ocl);

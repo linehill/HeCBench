@@ -22,7 +22,7 @@
 
 // Use a static data size for simplicity
 //
-#define SIZE (50000000)
+#define SIZE (128024000)
 
 ////////////////////////////////////////////////////////////////////////////////
 int compare(const void *a, const void *b) {
@@ -95,14 +95,7 @@ int main(int argc, char** argv)
       datamax = fmaxf(cpu_idata[i],datamax);
     }
   }
-  FILE *tp;
-  const char filename2[]="./hybridinput.txt";
-  tp = fopen(filename2,"w");
-  for(int i = 0; i < SIZE; i++) {
-    fprintf(tp,"%f ",cpu_idata[i]); 
-  }
 
-  fclose(tp);
   memcpy(cpu_odata, cpu_idata, mem_size);
 
   int *sizes = (int*) malloc(DIVISIONS * sizeof(int));

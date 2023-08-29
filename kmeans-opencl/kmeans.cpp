@@ -6,18 +6,6 @@
 #include <string>
 #include "kmeans.h"
 
-#ifdef WIN
-	#include <windows.h>
-#else
-	#include <pthread.h>
-	#include <sys/time.h>
-	double get_time() {
-		struct timeval t;
-		gettimeofday(&t,NULL);
-		return t.tv_sec+t.tv_usec*1e-6;
-	}
-#endif
-
 
 #ifdef NV 
 	#include <oclUtils.h>
@@ -234,8 +222,6 @@ int	kmeansOCL(float **feature,    /* in: [npoints][nfeatures] */
 	if(global_work[0]%local_work_size !=0)
 	  global_work[0]=(global_work[0]/local_work_size+1)*local_work_size;
 
-	double kernel_start = get_time();
-	
 	err = clEnqueueWriteBuffer(cmd_queue, d_cluster, 1, 0, n_clusters * n_features * sizeof(float), clusters[0], 0, 0, 0);
 	if(err != CL_SUCCESS) { printf("ERROR: clEnqueueWriteBuffer d_cluster (size:%d) => %d\n", n_points, err); return -1; }
 
@@ -255,9 +241,6 @@ int	kmeansOCL(float **feature,    /* in: [npoints][nfeatures] */
 	clFinish(cmd_queue);
 	err = clEnqueueReadBuffer(cmd_queue, d_membership, 1, 0, n_points * sizeof(int), membership_OCL, 0, 0, 0);
 	if(err != CL_SUCCESS) { printf("ERROR: Memcopy Out\n"); return -1; }
-	
-	double kernel_end = get_time();
-	printf("Total execution time of kernels = %lf(s)\n", kernel_end - kernel_start);
 
 	delta = 0;
 	for (i = 0; i < n_points; i++)

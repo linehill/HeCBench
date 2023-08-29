@@ -23,7 +23,7 @@ cl_bool compiled = FALSE;
 cl_kernel IMGVF_kernel;
 
 // Host function that launches an OpenCL kernel to compute the MGVF matrices for the specified cells
-void IMGVF_OpenCL(MAT **I, MAT **IMGVF, double vx, double vy, double e, int max_iterations, double cutoff, int num_cells) {
+double IMGVF_OpenCL(MAT **I, MAT **IMGVF, double vx, double vy, double e, int max_iterations, double cutoff, int num_cells) {
 
 	cl_int error;
 	
@@ -84,10 +84,11 @@ void IMGVF_OpenCL(MAT **I, MAT **IMGVF, double vx, double vy, double e, int max_
 	error = clFinish(command_queue);
 	check_error(error, __FILE__, __LINE__);
         double kernel_end = get_time();
-	printf("Total execution time of kernels = %lf(s)\n", kernel_end - kernel_start);
-	
+
 	// Copy back the final results from the GPU
 	IMGVF_OpenCL_cleanup(IMGVF, num_cells);
+
+	return (kernel_end - kernel_start);
 }
 
 

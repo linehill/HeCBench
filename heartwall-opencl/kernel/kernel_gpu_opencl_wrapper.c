@@ -25,6 +25,7 @@
 #include "./../util/opencl/opencl.h"				// (in directory)							needed by device functions
 #include "./../util/avi/avilib.h"					// (in directory)							needed by avi functions
 #include "./../util/avi/avimod.h"					// (in directory)							needed by avi functions
+#include "./../util/timer/timer.h"
 
 //======================================================================================================================================================150
 //	KERNEL_GPU_CUDA_WRAPPER FUNCTION HEADER
@@ -40,7 +41,7 @@
 //	KERNEL_GPU_CUDA_WRAPPER FUNCTION
 //========================================================================================================================================================================================================200
 
-void 
+uint64_t 
 kernel_gpu_opencl_wrapper(	params_common common,
 							int* endoRow,
 							int* endoCol,
@@ -1164,6 +1165,8 @@ kernel_gpu_opencl_wrapper(	params_common common,
 	fp* frame;
 	int frame_no;
 
+        uint64_t start_time = get_time();
+
 	for(frame_no=0; frame_no<common.frames_processed; frame_no++){
 
 		//==================================================50
@@ -1274,6 +1277,8 @@ kernel_gpu_opencl_wrapper(	params_common common,
 		//==================================================50
 
 	}
+
+        uint64_t end_time = get_time();
 
 	//====================================================================================================100
 	//	PRINT FRAME PROGRESS END
@@ -1456,6 +1461,7 @@ kernel_gpu_opencl_wrapper(	params_common common,
 	//	End
 	//======================================================================================================================================================150
 
+        return end_time - start_time;
 }
 
 //========================================================================================================================================================================================================200

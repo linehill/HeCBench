@@ -81,4 +81,6 @@ void setUsingImages(bool val);
 // Return whether or not images are being used
 bool isUsingImages(); 
 
+long long get_time();
+
 #endif

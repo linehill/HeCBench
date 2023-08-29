@@ -221,13 +221,6 @@ cl_float4* runMergeSort(int listsize, int divisions,
 //        printf("RESULT %f \n", d_resultList[i].s[2]);
 //        printf("RESULT %f \n", d_resultList[i].s[3]);
 //    }
-    cl_ulong time_start, time_end;
-    double total_time;
-    clGetEventProfilingInfo(mergeFirstEvent, CL_PROFILING_COMMAND_START, sizeof(time_start), &time_start, NULL);
-    clGetEventProfilingInfo(mergeFirstEvent, CL_PROFILING_COMMAND_END, sizeof(time_end), &time_end, NULL);
-    total_time = (time_end - time_start) / 1000000.0;
-    mergesum+= total_time;
-    printf("Merge First Kernel Time: %0.6lf \n", total_time);
     
 //    for(int i =0; i < listsize/4; i++) {
 //        printf("TEST %f \n", d_resultList[i].s[0]);
@@ -322,18 +315,12 @@ cl_float4* runMergeSort(int listsize, int divisions,
             exit(1);
         }
          clFinish(mergeCommands);
-        clGetEventProfilingInfo(mergePassEvent, CL_PROFILING_COMMAND_START, sizeof(time_start), &time_start, NULL);
-        clGetEventProfilingInfo(mergePassEvent, CL_PROFILING_COMMAND_END, sizeof(time_end), &time_end, NULL);
-        total_time = (time_end - time_start) / 1000000.0;
-        mergesum+= total_time;
-        mergePassTime+= total_time;
-        printf("Merge Pass Kernel Iteration Time: %0.6lf \n", total_time);
-		nrElems *= 2;
-		floatsperthread = (nrElems*4);
-        
-		if(threadsPerDiv == 1) break;
-	}
-    printf("Merge Pass Kernel Time: %0.3f \n", mergePassTime);
+
+	nrElems *= 2;
+	floatsperthread = (nrElems*4);
+
+	if(threadsPerDiv == 1) break;
+    }
 
     finalStartAddr = clCreateBuffer(mergeContext,CL_MEM_READ_WRITE, (divisions+1)*sizeof(int),NULL,NULL);
     
@@ -402,11 +389,7 @@ cl_float4* runMergeSort(int listsize, int divisions,
         exit(1);
     }
     clFinish(mergeCommands);
-    clGetEventProfilingInfo(mergePackEvent, CL_PROFILING_COMMAND_START, sizeof(time_start), &time_start, NULL);
-    clGetEventProfilingInfo(mergePackEvent, CL_PROFILING_COMMAND_END, sizeof(time_end), &time_end, NULL);
-    total_time = (time_end - time_start) / 1000000.0;
-    mergesum+= total_time;
-    printf("Merge Pack Kernel Time: %0.6lf \n", total_time);
+
     err = clEnqueueReadBuffer( mergeCommands, d_orig, CL_TRUE, 0, listsize*sizeof(float), d_origList, 0, NULL, NULL );
     if (err != CL_SUCCESS)
     {

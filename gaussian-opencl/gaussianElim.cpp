@@ -11,7 +11,7 @@
 #elif defined(RD_WG_SIZE)
         #define BLOCK_SIZE_0 RD_WG_SIZE
 #else
-        #define BLOCK_SIZE_0 0
+        #define BLOCK_SIZE_0 256
 #endif
 
 //2D defines. Go from specific to general                                                
@@ -22,7 +22,7 @@
 #elif defined(RD_WG_SIZE)
         #define BLOCK_SIZE_1_X RD_WG_SIZE
 #else
-        #define BLOCK_SIZE_1_X 0
+        #define BLOCK_SIZE_1_X 16
 #endif
 
 #ifdef RD_WG_SIZE_1_1
@@ -32,11 +32,11 @@
 #elif defined(RD_WG_SIZE)
         #define BLOCK_SIZE_1_Y RD_WG_SIZE
 #else
-        #define BLOCK_SIZE_1_Y 0
+        #define BLOCK_SIZE_1_Y 16
 #endif
 
 
-cl_context context=NULL;
+static cl_context context=NULL;
 
 // create both matrix and right hand side, Ke Wang 2013/08/12 11:51:06
 void
@@ -137,9 +137,16 @@ int main(int argc, char *argv[]) {
         // PrintAry(b, size);
     
     // run kernels
-	ForwardSub(context,a,b,m,size,timing);
-        // printf("The result of array b is after run: \n");
-        // PrintAry(b, size);
+    long long offload_start = get_time();
+    ForwardSub(context,a,b,m,size,timing);
+    long long offload_end = get_time();
+
+    if (timing) {
+        printf("Device offloading time %lld (us)\n\n",offload_end - offload_start);
+    }
+
+    // printf("The result of array b is after run: \n");
+    // PrintAry(b, size);
     
     //end timing
     if (!quiet) {
@@ -273,6 +280,7 @@ izeFan2Buf[0])*localWorksizeFan2Buf[0];
 izeFan2Buf[1])*localWorksizeFan2Buf[1];
         }
 
+    long long offload_start = get_time();
 	int t;
 	// 4. Setup and Run kernels
 	for (t=0; t<(size-1); t++) {
@@ -290,15 +298,10 @@ izeFan2Buf[1])*localWorksizeFan2Buf[1];
         error = clEnqueueNDRangeKernel(
                   command_queue,  fan1_kernel, 1, 0,
                   globalWorksizeFan1,localWorksizeFan1,
-                  0, NULL, &kernelEvent);
+                  0, NULL, NULL);
 
         cl_errChk(error,"ERROR in Executing Fan1 Kernel",true);
-        if (timing) {
-//             printf("here1a\n");
-             kernelTime+=eventTime(kernelEvent,command_queue);
-//             printf("here1b\n");
-        }
-        clReleaseEvent(kernelEvent);
+
 		//Fan1<<<dimGrid,dimBlock>>>(m_cuda,a_cuda,Size,t);
 		//cudaThreadSynchronize();
 		
@@ -315,18 +318,16 @@ izeFan2Buf[1])*localWorksizeFan2Buf[1];
         error = clEnqueueNDRangeKernel(
                   command_queue,  fan2_kernel, 2, 0,
                   globalWorksizeFan2,NULL,
-                  0, NULL, &kernelEvent);
+                  0, NULL, NULL);
 
         cl_errChk(error,"ERROR in Executing Fan1 Kernel",true);
-        if (timing) {
-//             printf("here2a\n");
-             kernelTime+=eventTime(kernelEvent,command_queue);
-//             printf("here2b\n");
-        }
-        clReleaseEvent(kernelEvent);
 		//Fan2<<<dimGridXY,dimBlockXY>>>(m_cuda,a_cuda,b_cuda,Size,Size-t,t);
 		//cudaThreadSynchronize();
 	}
+    clFinish(command_queue);
+    long long offload_end = get_time();
+    kernelTime = (float)((double)(offload_end - offload_start) / 1000000.0);
+
     // 5. transfer data off of device
     error = clEnqueueReadBuffer(command_queue,
         a_dev,
@@ -371,18 +372,17 @@ izeFan2Buf[1])*localWorksizeFan2Buf[1];
     readMB = (float)(sizeof(float) * size * (size + size + 1) / 1e6);
     
     if (timing) {
-        printf("Matrix Size\tWrite(s) [size]\t\tKernel(s)\tRead(s)  [size]\t\tTotal(s)\n");
-        printf("%dx%d      \t",size,size);
+        printf("Matrix Size %dx%d      \n",size,size);
         
-        printf("%f [%.2fMB]\t",writeTime,writeMB);
+        printf("Write(s) %f [Size: %.2fMB]\n",writeTime,writeMB);
         
 
-        printf("%f\t",kernelTime);
+        printf("Kernel time: %fs\n",kernelTime);
        
 
-        printf("%f [%.2fMB]\t",readTime,readMB);
+        printf("Read(s) %f [Size: %.2fMB]\n",readTime,readMB);
        
-        printf("%f\n\n",writeTime+kernelTime+readTime);
+        printf("Total time (s): %f\n\n",writeTime+kernelTime+readTime);
    }
     
 }
