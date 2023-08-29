@@ -6,7 +6,4 @@
 #./euler3d ../data/cfd/fvcorr.domn.193K   
 #./euler3d ../data/cfd/missile.domn.0.2M  
 
-#replace euler3d with other CFD programs
-#  ./euler3d ../data/cfd/fvcorr.domn.097K 1
-
 ./main ../data/cfd/missile.domn.0.2M -t gpu -d 0 "$@"

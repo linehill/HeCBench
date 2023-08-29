@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#There are three datasets:
+
+#./euler3d ../data/cfd/fvcorr.domn.097K   0
+#./euler3d ../data/cfd/fvcorr.domn.193K
+#./euler3d ../data/cfd/missile.domn.0.2M
+
+./main ../data/cfd/missile.domn.0.2M -t gpu -d 0 "$@"

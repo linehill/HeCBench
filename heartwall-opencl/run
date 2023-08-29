@@ -1,2 +1,3 @@
 #!/bin/bash
-./heartwall 20
+#./heartwall 20
+./main "$@"
