@@ -51,15 +51,15 @@ double master(fp timeinst,
   printf("\n");
 #endif
 
-  hipMemcpy(d_initvalu, initvalu, d_initvalu_mem, hipMemcpyHostToDevice);
-  hipMemcpy(d_params, parameter, d_params_mem, hipMemcpyHostToDevice);
+  hipMemcpyAsync(d_initvalu, initvalu, d_initvalu_mem, hipMemcpyHostToDevice);
+  hipMemcpyAsync(d_params, parameter, d_params_mem, hipMemcpyHostToDevice);
+  hipDeviceSynchronize();
 
   threads.x = NUMBER_THREADS;
   threads.y = 1;
   blocks.x = 2;
   blocks.y = 1;
 
-  hipDeviceSynchronize();
   auto start = std::chrono::steady_clock::now();
 
   hipLaunchKernelGGL(kernel, blocks, threads, 0, 0, 
@@ -73,8 +73,9 @@ double master(fp timeinst,
   auto end = std::chrono::steady_clock::now();
   auto time = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
 
-  hipMemcpy(finavalu, d_finavalu, d_finavalu_mem, hipMemcpyDeviceToHost);
-  hipMemcpy(com, d_com, d_com_mem, hipMemcpyDeviceToHost);
+  hipMemcpyAsync(finavalu, d_finavalu, d_finavalu_mem, hipMemcpyDeviceToHost);
+  hipMemcpyAsync(com, d_com, d_com_mem, hipMemcpyDeviceToHost);
+  hipDeviceSynchronize();
 
 #ifdef DEBUG
   for (int i = 0; i < EQUATIONS; i++)
