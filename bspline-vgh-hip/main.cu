@@ -149,31 +149,31 @@ int main(int argc, char ** argv) {
     ipartz = (int) uz; tz = uz-ipartz; int iz = min(max(0,(int) ipartz),spline_z_grid_num-1);
 
     eval_abc(Af,tx,&a[0]);
-    hipMemcpy(d_a, a, sizeof(float)*4, hipMemcpyHostToDevice);
+    hipMemcpyAsync(d_a, a, sizeof(float)*4, hipMemcpyHostToDevice);
 
     eval_abc(Af,ty,&b[0]);
-    hipMemcpy(d_b, b, sizeof(float)*4, hipMemcpyHostToDevice);
+    hipMemcpyAsync(d_b, b, sizeof(float)*4, hipMemcpyHostToDevice);
 
     eval_abc(Af,tz,&c[0]);
-    hipMemcpy(d_c, c, sizeof(float)*4, hipMemcpyHostToDevice);
+    hipMemcpyAsync(d_c, c, sizeof(float)*4, hipMemcpyHostToDevice);
 
     eval_abc(dAf,tx,&da[0]);
-    hipMemcpy(d_da, da, sizeof(float)*4, hipMemcpyHostToDevice);
+    hipMemcpyAsync(d_da, da, sizeof(float)*4, hipMemcpyHostToDevice);
 
     eval_abc(dAf,ty,&db[0]);
-    hipMemcpy(d_db, db, sizeof(float)*4, hipMemcpyHostToDevice);
+    hipMemcpyAsync(d_db, db, sizeof(float)*4, hipMemcpyHostToDevice);
 
     eval_abc(dAf,tz,&dc[0]);
-    hipMemcpy(d_dc, dc, sizeof(float)*4, hipMemcpyHostToDevice);
+    hipMemcpyAsync(d_dc, dc, sizeof(float)*4, hipMemcpyHostToDevice);
 
     eval_abc(d2Af,tx,&d2a[0]);
-    hipMemcpy(d_d2a, d2a, sizeof(float)*4, hipMemcpyHostToDevice);
+    hipMemcpyAsync(d_d2a, d2a, sizeof(float)*4, hipMemcpyHostToDevice);
 
     eval_abc(d2Af,ty,&d2b[0]);
-    hipMemcpy(d_d2b, d2b, sizeof(float)*4, hipMemcpyHostToDevice);
+    hipMemcpyAsync(d_d2b, d2b, sizeof(float)*4, hipMemcpyHostToDevice);
 
     eval_abc(d2Af,tz,&d2c[0]);              
-    hipMemcpy(d_d2c, d2c, sizeof(float)*4, hipMemcpyHostToDevice);
+    hipMemcpyAsync(d_d2c, d2c, sizeof(float)*4, hipMemcpyHostToDevice);
 
     dim3 global_size((spline_num_splines+255)/256*256);
     dim3 local_size(256);

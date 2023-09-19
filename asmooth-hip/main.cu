@@ -176,15 +176,15 @@ int main(int argc, char* argv[]) {
   dim3 blocks (16, 16);
 
   // reset output
-  hipMemcpy(d_out, out, size_bytes, hipMemcpyHostToDevice);
+  hipMemcpyAsync(d_out, out, size_bytes, hipMemcpyHostToDevice);
 
   double time = 0;
 
   for (int i = 0; i < repeat; i++) {
     // restore input image
-    hipMemcpy(d_img, img, size_bytes, hipMemcpyHostToDevice);
+    hipMemcpyAsync(d_img, img, size_bytes, hipMemcpyHostToDevice);
     // reset norm
-    hipMemcpy(d_norm, norm, size_bytes, hipMemcpyHostToDevice);
+    hipMemcpyAsync(d_norm, norm, size_bytes, hipMemcpyHostToDevice);
 
     hipDeviceSynchronize();
     auto start = std::chrono::steady_clock::now();
