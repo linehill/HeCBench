@@ -161,9 +161,6 @@
       "10"
     ]
   ],
-  "compute-score-sycl": [
-    "(?:Kernel Time = )([0-9.+-e]+)(?: ms)"
-  ],
   "convolutionSeparable-sycl": [
     "(?:Average kernel execution time )([0-9.+-e]+)(?: \\(s\\))",
     [
