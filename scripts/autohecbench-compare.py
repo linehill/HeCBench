@@ -6,6 +6,11 @@ import argparse
 import csv
 import statistics
 
+import math
+
+def geomean(xs):
+        return math.exp(math.fsum(math.log(x) for x in xs) / len(xs))
+
 def main():
     parser = argparse.ArgumentParser(description='Benchmarks comparisons')
 
@@ -38,7 +43,7 @@ def main():
 
         print("|{}|{:.2f}".format(k, ma / mb))
     print("|--|--")
-    print("|Geomean|{}".format(statistics.geometric_mean(speedups)))
+    print("|Geomean|{}".format(geomean(speedups)))
 
 if __name__ == "__main__":
     main()
