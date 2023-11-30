@@ -4,6 +4,12 @@ LEVEL0=1
 OPENCL=1
 REPEATS=4
 
+export CHIP_L0_COLLECT_EVENTS_TIMEOUT=5
+export CHIP_L0_IMM_CMD_LISTS=1
+# export CHIP_DUMP_SPIRV=1
+# export SYCL_DUMP_IMAGES=1
+
+
 for D in $(echo *-hip *-sycl); do
   mkdir -p $D/l0_cache
 done
@@ -37,10 +43,10 @@ source /opt/intel/oneapi/setvars.sh
 
 if [ $OPENCL -ne 0 ]; then
   export SYCL_DEVICE_FILTER=opencl:gpu:2
-  ./scripts/autohecbench.py --warmup true --repeat ${REPEATS} -o test_FULL_${REPEATS}_x_sycl_oclBE.csv --sycl-type opencl sycl
+  ./scripts/autohecbench.py --warmup true --repeat ${REPEATS} --extra-compile-flags="-fp-model=precise -fno-sycl-instrument-device-code" -o test_FULL_${REPEATS}_x_sycl_oclBE.csv --sycl-type opencl sycl
 fi
 
 if [ $LEVEL0 -ne 0 ]; then
   export SYCL_DEVICE_FILTER=ext_oneapi_level_zero:gpu:0
-  ./scripts/autohecbench.py --warmup true --repeat ${REPEATS} -o test_FULL_${REPEATS}_x_sycl_l0BE.csv --sycl-type opencl sycl
+  ./scripts/autohecbench.py --warmup true --repeat ${REPEATS} --extra-compile-flags="-fp-model=precise -fno-sycl-instrument-device-code" -o test_FULL_${REPEATS}_x_sycl_l0BE.csv --sycl-type opencl sycl
 fi
