@@ -72,12 +72,22 @@ class Benchmark:
         if self.verbose:
             print(proc.stdout)
 
-    def run(self):
-        cmd = ["./" + self.binary] + self.args
-        proc = subprocess.run(cmd, cwd=self.path, stdout=subprocess.PIPE, encoding="ascii", timeout=600)
+    def run(self, vtune_root_prefix = None, vtune_root_suffix = None,  numactl_args = None, extra_env = None):
+        cmd = []
+        if numactl_args:
+            cmd.append("numactl")
+            cmd.extend(numactl_args.split())
+        if vtune_root_prefix:
+            vtune_r = vtune_root_prefix + self.name
+            if vtune_root_suffix:
+                vtune_r += vtune_root_suffix
+            cmd.extend(["vtune", '-collect', 'gpu-hotspots', '-r', vtune_r])
+        cmd.append("./" + self.binary)
+        cmd.extend(self.args)
+        print("Running: " + " ".join(cmd))
+        proc = subprocess.run(cmd, cwd=self.path, stdout=subprocess.PIPE, encoding="ascii", timeout=600, env=extra_env)
         out = proc.stdout
         if self.verbose:
-            print(" ".join(cmd))
             print(out)
         res = re.findall(self.res_regex, out)
         if not res:
@@ -124,6 +134,14 @@ def main():
                         help='List of failing benchmarks to ignore')
     parser.add_argument('bench', nargs='+',
                         help='Either specific benchmark name or sycl, cuda, hip or opencl')
+    parser.add_argument('--extra-env', default='',
+                        help='Additional environment')
+    parser.add_argument('--numactl-args', default=None,
+                        help='numactl args')
+    parser.add_argument('--vtune-root-prefix', default=None,
+                        help='vtune report root directory base')
+    parser.add_argument('--vtune-root-suffix', default=None,
+                        help='vtune report root directory suffix ')
 
     args = parser.parse_args()
 
@@ -173,6 +191,17 @@ def main():
     if args.output:
         outfile = open(args.output, 'w')
 
+    extra_env = {}
+    extra_env.update(os.environ)
+    if args.extra_env:
+        env_strs = args.extra_env.split(";")
+        for e in env_strs:
+            key, val = e.split("=", 1)
+            extra_env[key] = val
+    if args.numactl_args or args.vtune_root_prefix:
+        args.warmup = False
+        args.repeat = 1
+
     for b in benches:
         try:
             print("running: {}".format(b.name), flush=True)
@@ -183,7 +212,7 @@ def main():
 
             all_res = []
             for i in range(args.repeat):
-                all_res.append(b.run())
+                all_res.append(b.run(args.vtune_root_prefix, args.vtune_root_suffix, args.numactl_args, extra_env))
             # take the minimum result
             res = str(min(all_res))
 
