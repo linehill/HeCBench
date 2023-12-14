@@ -20,3 +20,5 @@ minimod-sycl
 minimod-hip
 b+tree-sycl
 b+tree-hip
+mnist-hip
+mnist-sycl

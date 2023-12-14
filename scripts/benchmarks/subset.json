@@ -1439,7 +1439,7 @@
   ],
   "lud-cuda": [
     "(?:Total kernel execution time : )([0-9.]+)",
-    ["-s", "1024", "-v"],
+    ["-s", "4096", "-v"],
     "run"
   ],
   "nw-cuda": [
