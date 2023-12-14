@@ -21,8 +21,8 @@ export CHIP_LOGLEVEL=crit
 if [ $OPENCL -ne 0 ]; then
 
   export CHIP_BE=opencl
-
-  ./scripts/autohecbench.py --warmup true --repeat ${REPEATS} --extra-compile-flags="-ffast-math" -o test_FULL_${REPEATS}_x_hip_oclBE.csv hip
+  export CHIP_PLATFORM=0
+  ./scripts/autohecbench.py --warmup true --repeat ${REPEATS} --extra-compile-flags="-ffast-math" -o test_FULL_${REPEATS}_x_hip_fast_oclBE.csv hip
 fi
 
 # -------------------
@@ -31,7 +31,7 @@ if [ $LEVEL0 -ne 0 ]; then
 
   export CHIP_BE=level0
 
-  ./scripts/autohecbench.py --warmup true --repeat ${REPEATS} --extra-compile-flags="-ffast-math" -o test_FULL_${REPEATS}_x_hip_l0BE.csv hip
+  ./scripts/autohecbench.py --warmup true --repeat ${REPEATS} --extra-compile-flags="-ffast-math" -o test_FULL_${REPEATS}_x_hip_fast_l0BE.csv hip
 fi
 
 #############################################
@@ -40,10 +40,10 @@ source /opt/intel/oneapi/setvars.sh
 
 if [ $OPENCL -ne 0 ]; then
   export SYCL_DEVICE_FILTER=opencl:gpu:0
-  ./scripts/autohecbench.py --warmup true --repeat ${REPEATS} --extra-compile-flags="-fp-model=fast -fno-sycl-instrument-device-code" -o test_FULL_${REPEATS}_x_sycl_oclBE.csv --sycl-type opencl sycl
+  ./scripts/autohecbench.py --warmup true --repeat ${REPEATS} --extra-compile-flags="-fp-model=fast -fno-sycl-instrument-device-code" -o test_FULL_${REPEATS}_x_sycl_fast_oclBE.csv --sycl-type opencl sycl
 fi
 
 if [ $LEVEL0 -ne 0 ]; then
   export SYCL_DEVICE_FILTER=ext_oneapi_level_zero:gpu:0
-  ./scripts/autohecbench.py --warmup true --repeat ${REPEATS} --extra-compile-flags="-fp-model=fast -fno-sycl-instrument-device-code" -o test_FULL_${REPEATS}_x_sycl_l0BE.csv --sycl-type opencl sycl
+  ./scripts/autohecbench.py --warmup true --repeat ${REPEATS} --extra-compile-flags="-fp-model=fast -fno-sycl-instrument-device-code" -o test_FULL_${REPEATS}_x_sycl_fast_l0BE.csv --sycl-type opencl sycl
 fi
