@@ -5,7 +5,7 @@
 import re, time, sys, subprocess, multiprocessing, os
 import argparse
 import json
-
+import statistics
 
 class Benchmark:
     def __init__(self, args, name, res_regex, run_args = [], binary = "main", invert = False):
@@ -214,9 +214,12 @@ def main():
             for i in range(args.repeat):
                 all_res.append(b.run(args.vtune_root_prefix, args.vtune_root_suffix, args.numactl_args, extra_env))
             # take the minimum result
-            res = str(min(all_res))
+            res_min = min(all_res)
+            res_avg = sum(all_res) / len(all_res)
+            res_stddev = statistics.stdev(all_res)
+            res_coefvar = res_stddev / res_avg
 
-            print(b.name + "," + res, file=outfile)
+            print(b.name + "," + str(res_min)  + "," + str(res_avg)  + "," + str(res_stddev) + "," + str(res_coefvar), file=outfile, flush=True)
         except Exception as err:
             print("Error running: {}".format(b.name), flush=True)
             print(err, flush=True)
