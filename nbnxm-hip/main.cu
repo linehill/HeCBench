@@ -69,7 +69,7 @@ void reduceForceIAndFShiftXYZ(
   static constexpr int clSizeLog2 = StaticLog2<c_clSize>::value;
   const int            tidx       = tidxi + tidxj * c_clSize;
   float                fShiftBuf  = 0.0F;
-#pragma unroll 8
+
   for (int ciOffset = 0; ciOffset < c_nbnxnGpuNumClusterPerSupercluster; ciOffset++)
   {
     const int aidx = (sci * c_nbnxnGpuNumClusterPerSupercluster + ciOffset) * c_clSize + tidxi;
@@ -286,7 +286,6 @@ __global__ void nbnxmKernelTest(
 
       Float3 fCjBuf(0.0F, 0.0F, 0.0F);
 
-#pragma unroll 8
       for (int i = 0; i < c_nbnxnGpuNumClusterPerSupercluster; i++)
       {
         if (imask & maskJI)
@@ -325,7 +324,7 @@ __global__ void nbnxmKernelTest(
             // Ensure distance do not become so small that r^-12 overflows
             r2 = max(r2, c_nbnxnMinDistanceSquared);
 
-            const float rInv = __frsqrt_rn(r2);
+            const float rInv = rsqrt(r2);
             const float r2Inv = rInv * rInv;
             float       r6Inv, fInvR;
             r6Inv = r2Inv * r2Inv * r2Inv;

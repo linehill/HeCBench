@@ -8,7 +8,7 @@
 #ifndef _PETRI_H_
 #define _PETRI_H_
 
-#define MAX_DEVICE_MEM 750000000
+#define MAX_DEVICE_MEM (2048UL * 1024 * 1024)
 
 __global__ void PetrinetKernel(int* g_places, int n, int s, int t);
 
