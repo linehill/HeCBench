@@ -2,7 +2,7 @@
   "backprop-sycl": [
     "(?:time = )([0-9.+-e]+)(?:\\(s\\))",
     [
-      "12802400"
+      "128000000"
     ]
   ],
   "gaussian-sycl": [
@@ -16,8 +16,9 @@
   "histogram-sycl": [
     "(?:Avg time )([0-9.+-e]+)(?: us )",
     [
-      "--width=3840",
-      "--height=2160"
+      "--width=4096",
+      "--height=4096",
+      "--i=255"
     ]
   ],
   "nbody-sycl": [
@@ -28,7 +29,10 @@
     ]
   ],
   "su3-sycl": [
-    "(?:Total kernel execution time = )([0-9.+-e]+)(?: \\(s\\))"
+    "(?:Total kernel execution time = )([0-9.+-e]+)(?: \\(s\\))",
+    [
+      "-i", "1200", "-w", "2"
+    ]
   ],
   "adv-sycl": [
     "(?:elapsed time=)([0-9.+-e]+)(?: )",
@@ -151,7 +155,7 @@
     "(?:Average kernel execution time )([0-9.+-e]+)(?: \\(us\\))",
     [
       "1000000",
-      "1000"
+      "100"
     ]
   ],
   "complex-sycl": [
@@ -187,7 +191,7 @@
     "(?:: )([0-9.+-e]+)(?: s)",
     [
       "100000000",
-      "10"
+      "60"
     ]
   ],
   "eigenvalue-sycl": [
@@ -224,7 +228,7 @@
     "(?:Average kernel execution time )([0-9.+-e]+)(?: \\(s\\))",
     [
       "2000",
-      "10"
+      "100"
     ]
   ],
   "extend2-sycl": [
@@ -250,7 +254,10 @@
     "(?:Average kernel execution time )([0-9.]+)(?: \\(s\\))"
   ],
   "ising-sycl": [
-    "(?:elapsed time: )([0-9.+-e]+)(?: sec)"
+    "(?:elapsed time: )([0-9.+-e]+)(?: sec)",
+    [
+      "-x", "32768", "-y", "32768", "-w", "10", "-n", "100"
+    ]
   ],
   "iso2dfd-sycl": [
     "(?:Total kernel execution time )([0-9.+-e]+)(?: \\(ms\\))",
@@ -282,8 +289,7 @@
   "minisweep-sycl": [
     "(?:kernel time: )([0-9.+-e]+)(?: \\(s\\))",
     [
-      "--niterations",
-      "5"
+      "--ncell_x", "8", "--ncell_y", "8", "--ncell_z", "8", "--niterations", "100"
     ]
   ],
   "mnist-sycl": [
@@ -305,7 +311,7 @@
   "nbnxm-sycl": [
     "(?:Average kernel execution time \\(w/o shift\\): )([0-9.]+)",
     [
-      "100"
+      "10000"
     ]
   ],
   "page-rank-sycl": [
@@ -332,7 +338,7 @@
       "-z",
       "20",
       "-np",
-      "92000"
+      "400000"
     ]
   ],
   "pathfinder-sycl": [
@@ -346,7 +352,7 @@
   "pns-sycl": [
     "(?:Total device execution time: )([0-9.+-e]+)(?: s)",
     [
-      "5000",
+      "6400",
       "100",
       "100"
     ]
@@ -363,7 +369,7 @@
   "tridiagonal-sycl": [
     "(?:Time = )([0-9.+-e]+)(?: s)",
     [
-      "-num_systems=30000"
+      "-num_systems=640000"
     ]
   ],
   "vanGenuchten-sycl": [
@@ -378,7 +384,7 @@
   "black-scholes-sycl": [
     "(?:Processing time on GPU: )([0-9.+-e]+)(?: \\(ms\\))",
     [
-      "100"
+      "10000"
     ]
   ],
   "attention-sycl": [
@@ -413,13 +419,13 @@
   ],
   "black-scholes-cuda": [
     "(?:GPU: )([0-9.+-e]+)(?: \\(ms\\))",
-    ["1"],
+    ["10000"],
     "BlackScholesEngine"
   ],
   "backprop-cuda": [
     "(?:time = )([0-9.+-e]+)(?:\\(s\\))",
     [
-      "12802400"
+      "128000000"
     ]
   ],
   "gaussian-cuda": [
@@ -433,8 +439,9 @@
   "histogram-cuda": [
     "(?:Avg time )([0-9.+-e]+)(?: us )",
     [
-      "--width=3840",
-      "--height=2160"
+      "--width=4096",
+      "--height=4096",
+      "--i=255"
     ]
   ],
   "nbody-cuda": [
@@ -574,7 +581,7 @@
     "(?:Average kernel execution time )([0-9.+-e]+)(?: \\(us\\))",
     [
       "1000000",
-      "1000"
+      "100"
     ]
   ],
   "complex-cuda": [
@@ -613,7 +620,7 @@
     "(?:: )([0-9.+-e]+)(?: s)",
     [
       "100000000",
-      "10"
+      "60"
     ]
   ],
   "eigenvalue-cuda": [
@@ -650,7 +657,7 @@
     "(?:Average kernel execution time )([0-9.+-e]+)(?: \\(s\\))",
     [
       "2000",
-      "10"
+      "100"
     ]
   ],
   "extend2-cuda": [
@@ -673,7 +680,10 @@
     ]
   ],
   "ising-cuda": [
-    "(?:elapsed time: )([0-9.+-e]+)(?: sec)"
+    "(?:elapsed time: )([0-9.+-e]+)(?: sec)",
+    [
+      "-x", "32768", "-y", "32768", "-w", "10", "-n", "100"
+    ]
   ],
   "jacobi-cuda": [
     "(?:Total elapsed time: )([0-9.+-e]+)(?: seconds)"
@@ -694,8 +704,7 @@
   "minisweep-cuda": [
     "(?:kernel time: )([0-9.+-e]+)(?: \\(s\\))",
     [
-      "--niterations",
-      "5"
+      "--ncell_x", "8", "--ncell_y", "8", "--ncell_z", "8", "--niterations", "100"
     ]
   ],
   "mnist-cuda": [
@@ -746,7 +755,7 @@
       "-z",
       "20",
       "-np",
-      "92000"
+      "400000"
     ]
   ],
   "pathfinder-cuda": [
@@ -773,7 +782,7 @@
   "tridiagonal-cuda": [
     "(?:Time = )([0-9.+-e]+)(?: s)",
     [
-      "-num_systems=30000"
+      "-num_systems=640000"
     ]
   ],
   "vanGenuchten-cuda": [
@@ -786,7 +795,10 @@
     ]
   ],
   "su3-cuda": [
-    "(?:Total kernel execution time = )([0-9.+-e]+)(?: \\(s\\))"
+    "(?:Total kernel execution time = )([0-9.+-e]+)(?: \\(s\\))",
+    [
+      "-i", "1200", "-w", "2"
+    ]
   ],
   "aobench-cuda": [
     "(?:Average render time: )([0-9.+-e]+)(?: sec)",
@@ -810,20 +822,20 @@
   "pns-cuda": [
     "(?:Total device execution time: )([0-9.+-e]+)(?: s)",
     [
-      "5000",
+      "6400",
       "100",
       "100"
     ]
   ],
   "black-scholes-hip": [
     "(?:GPU: )([0-9.+-e]+)(?: \\(ms\\))",
-    ["1"],
+    ["10000"],
     "BlackScholesEngine"
   ],
   "backprop-hip": [
     "(?:time = )([0-9.+-e]+)(?:\\(s\\))",
     [
-      "12802400"
+      "128000000"
     ]
   ],
   "gaussian-hip": [
@@ -837,8 +849,9 @@
   "histogram-hip": [
     "(?:Avg time )([0-9.+-e]+)(?: us )",
     [
-      "--width=3840",
-      "--height=2160"
+      "--width=4096",
+      "--height=4096",
+      "--i=255"
     ]
   ],
   "nbody-hip": [
@@ -849,7 +862,10 @@
     ]
   ],
   "su3-hip": [
-    "(?:Total kernel execution time = )([0-9.+-e]+)(?: \\(s\\))"
+    "(?:Total kernel execution time = )([0-9.+-e]+)(?: \\(s\\))",
+    [
+      "-i", "1200", "-w", "2"
+    ]
   ],
   "ace-hip": [
     "(?:Offload time: )([0-9.+-e]+)(?: \\(ms\\))",
@@ -1003,7 +1019,7 @@
     "(?:Average kernel execution time )([0-9.+-e]+)(?: \\(us\\))",
     [
       "1000000",
-      "1000"
+      "100"
     ]
   ],
   "complex-hip": [
@@ -1042,7 +1058,7 @@
     "(?:: )([0-9.+-e]+)(?: s)",
     [
       "100000000",
-      "10"
+      "60"
     ]
   ],
   "eigenvalue-hip": [
@@ -1079,7 +1095,7 @@
     "(?:Average kernel execution time )([0-9.+-e]+)(?: \\(s\\))",
     [
       "2000",
-      "10"
+      "100"
     ]
   ],
   "extend2-hip": [
@@ -1105,7 +1121,10 @@
     "(?:Average kernel execution time )([0-9.]+)(?: \\(s\\))"
   ],
   "ising-hip": [
-    "(?:elapsed time: )([0-9.+-e]+)(?: sec)"
+    "(?:elapsed time: )([0-9.+-e]+)(?: sec)",
+    [
+      "-x", "32768", "-y", "32768", "-w", "10", "-n", "100"
+    ]
   ],
   "iso2dfd-hip": [
     "(?:Total kernel execution time )([0-9.+-e]+)(?: \\(ms\\))",
@@ -1150,8 +1169,7 @@
   "minisweep-hip": [
     "(?:kernel time: )([0-9.+-e]+)(?: \\(s\\))",
     [
-      "--niterations",
-      "5"
+      "--ncell_x", "8", "--ncell_y", "8", "--ncell_z", "8", "--niterations", "100"
     ]
   ],
   "mnist-hip": [
@@ -1178,9 +1196,9 @@
   ],
   "nbnxm-hip": [
     "(?:Average kernel execution time \\(w/o shift\\): )([0-9.]+)",
-   [
-     "100"
-   ]
+    [
+      "10000"
+    ]
   ],
   "page-rank-hip": [
     "(?:Total kernel execution time: )([0-9.+-e]+)(?: \\(s\\))",
@@ -1208,7 +1226,7 @@
       "-z",
       "20",
       "-np",
-      "92000"
+      "400000"
     ]
   ],
   "pathfinder-hip": [
@@ -1222,7 +1240,7 @@
   "pns-hip": [
     "(?:Total device execution time: )([0-9.+-e]+)(?: s)",
     [
-      "5000",
+      "6400",
       "100",
       "100"
     ]
@@ -1243,7 +1261,7 @@
   "tridiagonal-hip": [
     "(?:Time = )([0-9.+-e]+)(?: s)",
     [
-      "-num_systems=30000"
+      "-num_systems=640000"
     ]
   ],
   "vanGenuchten-hip": [
@@ -1469,7 +1487,7 @@
   "backprop-opencl": [
     "(?:Device offloading time = )([0-9.]+)(?:\\(s\\))",
     [
-      "12802400"
+      "128000000"
     ],
     "run"
   ],
@@ -1528,7 +1546,7 @@
       "-z",
       "20",
       "-np",
-      "92000"
+      "400000"
     ],
     "run"
   ],
