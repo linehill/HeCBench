@@ -296,5 +296,5 @@ int main(int argc, char** argv) {
 
   printf("%s\n", (errors == 0) ? "PASS" : "FAIL");
 
-  return 0;
+  return (errors == 0) ? 0 : 1;
 }

@@ -144,8 +144,12 @@ void run(long int input_size) {
 
     // check for errors in decompressed data
     if(cuhd::CUHDUtil::equals(random_data->data(),
-          output_buffer->get_decompressed_data().get(), input_size));
-    else std::cout << "********* MISMATCH ************" << std::endl;
+          output_buffer->get_decompressed_data().get(), input_size))
+      std::cout << "PASS \n";
+    else {
+      std::cout << "FAIL \n";
+      exit(1);
+    }
 
     // print compressed size (bytes)
     std::cout << std::left << std::setw(10)

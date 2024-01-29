@@ -145,8 +145,9 @@ int main(int argc, char** argv)
 
   if(sum==checksum)
     std::cout<<"VERIFICATION: result is CORRECT"<<std::endl<<std::endl;
-  else
-    std::cout<<"VERIFICATION: result is INCORRECT!!"<<std::endl<<std::endl;
+  else {
+    std::cout<<"VERIFICATION: result is INCORRECT!!"<<std::endl<<std::endl; exit(1);
+  }
 
   t1 = std::chrono::high_resolution_clock::now();
   for(int i=0;i<N;i++) {
@@ -163,8 +164,9 @@ int main(int argc, char** argv)
 
   if(sum==checksum)
     std::cout<<"VERIFICATION: result is CORRECT"<<std::endl<<std::endl;
-  else
-    std::cout<<"VERIFICATION: result is INCORRECT!!"<<std::endl<<std::endl;
+  else {
+    std::cout<<"VERIFICATION: result is INCORRECT!!"<<std::endl<<std::endl; exit(1);
+  }
   t1 = std::chrono::high_resolution_clock::now();
 
   for(int i=0;i<N;i++) {
@@ -181,8 +183,9 @@ int main(int argc, char** argv)
 
   if(sum==checksum)
     std::cout<<"VERIFICATION: result is CORRECT"<<std::endl<<std::endl;
-  else
-    std::cout<<"VERIFICATION: result is INCORRECT!!"<<std::endl<<std::endl;
+  else {
+    std::cout<<"VERIFICATION: result is INCORRECT!!"<<std::endl<<std::endl; exit(1);
+  }
 
   t1 = std::chrono::high_resolution_clock::now();
   for(int i=0;i<N;i++) {
@@ -199,8 +202,9 @@ int main(int argc, char** argv)
 
   if(sum==checksum)
     std::cout<<"VERIFICATION: result is CORRECT"<<std::endl<<std::endl;
-  else
-    std::cout<<"VERIFICATION: result is INCORRECT!!"<<std::endl<<std::endl;
+  else {
+    std::cout<<"VERIFICATION: result is INCORRECT!!"<<std::endl<<std::endl; exit(1);
+  }
 
   t1 = std::chrono::high_resolution_clock::now();
   for(int i=0;i<N;i++) {
@@ -217,8 +221,9 @@ int main(int argc, char** argv)
 
   if(sum==checksum)
     std::cout<<"VERIFICATION: result is CORRECT"<<std::endl<<std::endl;
-  else
-    std::cout<<"VERIFICATION: result is INCORRECT!!"<<std::endl<<std::endl;
+  else {
+    std::cout<<"VERIFICATION: result is INCORRECT!!"<<std::endl<<std::endl; exit(1);
+  }
 
   hipFree(in);
   hipFree(out);

@@ -120,7 +120,7 @@ int main(int argc, char** argv)
             << ") * b(" << N << "," << P << ")\n";
 
 #ifdef VERIFY
-  VerifyResult(a_host, b_host, c_host, c_back);
+  bool ok = VerifyResult(a_host, b_host, c_host, c_back);
 #endif
 
   delete[] a_host;
@@ -130,5 +130,5 @@ int main(int argc, char** argv)
   hipFree(a_device);
   hipFree(b_device);
   hipFree(c_device);
-  return 0;
+  return ok ? 0 : 1;
 }

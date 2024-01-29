@@ -221,8 +221,10 @@ int main(int argc, char* argv[])
       
       if (ok)
         printf("Average time of channel sum (nchw): %f (ms)\n", (time * 1e-6f) / repeat);
-      else
+      else {
         printf("Verification fails for channel sum (nchw)\n");
+        exit(1);
+      }
 
       hipFree(d_X);
       hipFree(d_sum);

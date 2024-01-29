@@ -121,7 +121,7 @@ int main(int argc, char** argv)
   q.memcpy(c_back, d_c, sizeof(int)*M*P).wait();
 
 #ifdef VERIFY
-  VerifyResult(h_a, h_b, h_c, c_back);
+  bool ok = VerifyResult(h_a, h_b, h_c, c_back);
 #endif
 
   delete[] h_a;
@@ -131,5 +131,5 @@ int main(int argc, char** argv)
   sycl::free(d_a, q);
   sycl::free(d_b, q);
   sycl::free(d_c, q);
-  return 0;
+  return ok ? 0 : 1;
 }

@@ -120,6 +120,7 @@ void tsa(sycl::queue &q, int width, int height, int repeat) {
     }
   }
   printf("%s\n", ok ? "PASS" : "FAIL");
+  if (!ok) exit(1);
 
   delete[] p_real;
   delete[] p_imag;

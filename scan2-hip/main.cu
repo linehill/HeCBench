@@ -346,8 +346,10 @@ int main(int argc, char * argv[])
   // compare the results and see if they match
   if (compare<float>(output, verificationOutput, length, (float)0.001))
     std::cout << "PASS" << std::endl;
-  else
+  else {
     std::cout << "FAIL" << std::endl;
+    exit(1);
+  }
 
   free(input);
   free(output);

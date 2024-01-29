@@ -132,9 +132,10 @@ int main( int argc, char** argv)
   for(int k = 0; k < nwg; k++) sum += h_result[k];
 
   double ref_sum = reference(f, A, B, ROW_SIZE, EPS);
-  printf("%s\n", (fabs(sum - ref_sum) > EPS) ? "FAIL" : "PASS");
+  bool ok = fabs(sum - ref_sum) <= EPS;
+  printf("%s\n", ok ? "FAIL" : "PASS");
 
   free(h_result);
   sycl::free(d_result, q);
-  return 0;
+  return ok ? 0 : 1;
 }
