@@ -435,7 +435,7 @@ int test(uint arraySize, unsigned int  NUM_ITERATIONS,
     GPUQSort(q, arraySize, pArray, pArrayCopy);
     endClock = seconds();
     totalTime = endClock - beginClock;
-    std::cout << "Time to sort: " << totalTime * 1000 << " ms" << std::endl;
+    std::cout << "Time to GPU sort: " << totalTime * 1000 << " ms" << std::endl;
     times[k] = totalTime;
     AverageTime += totalTime;
 #ifdef TRUST_BUT_VERIFY

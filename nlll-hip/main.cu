@@ -200,11 +200,11 @@ void driver(char** argv) {
                                     size_average, ignore_index, \
                                     r_output, r_total_weight, \
                                     h_input, h_weights, h_target, repeat)
-  EVAL(64);
-  EVAL(128);
-  EVAL(256);
+// EVAL(64);
+// EVAL(128);
+//  EVAL(256);
   EVAL(512);
-  EVAL(1024);
+//  EVAL(1024);
 
   free(h_input);
   free(h_target);

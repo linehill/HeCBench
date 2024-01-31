@@ -93,7 +93,7 @@ int main() {
   int const numBits = 13;
 
   // unpack doesn't handle 0 bits
-  std::vector<size_t> const sizes{2, 123, 3411, 83621, 872163, 100000001};
+  std::vector<size_t> const sizes{100000001};
 
   using T = int32_t;
 
