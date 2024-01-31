@@ -228,8 +228,12 @@ def main():
             # take the minimum result
             res_min = min(all_res)
             res_avg = sum(all_res) / len(all_res)
-            res_stddev = statistics.stdev(all_res)
-            res_coefvar = res_stddev / res_avg
+            if args.repeat > 1:
+                res_stddev = statistics.stdev(all_res)
+                res_coefvar = res_stddev / res_avg
+            else:
+                res_stddev = 0
+                res_coefvar = 0
 
             print(b.name + "," + str(res_min)  + "," + str(res_avg)  + "," + str(res_stddev) + "," + str(res_coefvar), file=outfile, flush=True)
         except Exception as err:
