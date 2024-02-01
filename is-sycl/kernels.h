@@ -429,9 +429,6 @@ void rank_gpu_kernel_7(
           }
           break;
       }
-      if(failed==1){
-        printf("Failed partial verification: iteration %d, test key %d\n", iteration, (int)i);
-      }
     }
   }
   *passed_verification_device += passed_verification;

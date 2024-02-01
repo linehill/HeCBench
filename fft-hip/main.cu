@@ -37,7 +37,11 @@ using namespace std;
 
 __device__
 T2 exp_i( T phi ) {
+#ifdef SINGLE_PRECISION
+  return (T2){ cosf(phi), sinf(phi) };
+#else
   return (T2){ cos(phi), sin(phi) };
+#endif
 }
 
 __device__

@@ -102,8 +102,8 @@ main(int argc, char *argv[]) {
   //write_to_file(fname, arr);
   /* write timing info */
   printf(" iters = %8d, (Lx,Ly) = %6d, %6d, t = %8.1f usec/iter, BW = %6.3f GB/s, P = %6.3f Gflop/s\n",
-	 niter, Lx, Ly, t0
-	 Lx*Ly*sizeof(float)*2.0/(t0*1.0e3), 
+	 niter, Lx, Ly, t0,
+	 Lx*Ly*sizeof(float)*2.0/(t0*1.0e3),
 	 (Lx*Ly*6.0)/(t0*1.0e3));
   /* free super-site buffers */
   for(int i=0; i<2; i++) {

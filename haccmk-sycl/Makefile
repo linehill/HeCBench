@@ -18,7 +18,7 @@ GCC_TOOLCHAIN = "/auto/software/gcc/x86_64/gcc-9.1.0/"
 # Program name & source code list
 #===============================================================================
 
-program = haccmk
+program = main
 
 source = haccmk.cpp
 
