@@ -188,8 +188,17 @@ def main():
     t_compiled = time.time()
 
     outfile = sys.stdout
+    existing = {}
     if args.output:
-        outfile = open(args.output, 'w')
+        if os.path.isfile(args.output):
+            outfile = open(args.output, 'r+t')
+        else:
+            outfile = open(args.output, 'w+t')
+        for line in outfile:
+            bench, *rest = line.split(',')
+            print("Found bench: {}", bench)
+            existing[bench] = True
+        outfile.seek(0, 2)
 
     extra_env = {}
     extra_env.update(os.environ)
@@ -205,6 +214,9 @@ def main():
     for b in benches:
         try:
             print("running: {}".format(b.name), flush=True)
+            if b.name in existing:
+                print("result already exists, skipping", flush=True)
+                continue
             time.sleep(1)
 
             if args.warmup:
