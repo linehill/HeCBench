@@ -35,7 +35,7 @@ endif
 
 # Optimization Flags
 ifeq ($(OPTIMIZE),yes)
-  CFLAGS += -O3 -ffast-math -munsafe-fp-atomics
+  CFLAGS += -O3 -munsafe-fp-atomics
 endif
 
 #===============================================================================

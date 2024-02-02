@@ -53,7 +53,7 @@ endif
 
 # Optimization Flags
 ifeq ($(OPTIMIZE),yes)
-  CFLAGS += -O3 -ffast-math
+  CFLAGS += -O3
 endif
 
 ifeq ($(GPU),yes)
