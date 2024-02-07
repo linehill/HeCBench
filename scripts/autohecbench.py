@@ -60,11 +60,13 @@ class Benchmark:
         if self.verbose:
             out = subprocess.PIPE
 
-        proc = subprocess.run(["make"] + self.MAKE_ARGS, cwd=self.path, stdout=out, stderr=subprocess.STDOUT, encoding="ascii")
+        proc = subprocess.run(["make"] + self.MAKE_ARGS, cwd=self.path, capture_output=True, encoding="ascii")
         try:
             proc.check_returncode()
         except subprocess.CalledProcessError as e:
             print(f'Failed compilation in {self.path}.\n{e}')
+            if e.stdout:
+                print(e.stdout, file=sys.stderr)
             if e.stderr:
                 print(e.stderr, file=sys.stderr)
             raise(e)
