@@ -91,6 +91,7 @@ class Benchmark:
         out = proc.stdout
         if self.verbose:
             print(out)
+        proc.check_returncode()
         res = re.findall(self.res_regex, out)
         if not res:
             raise Exception(self.path + ":\nno regex match for " + self.res_regex + " in\n" + out)
@@ -180,7 +181,7 @@ def main():
 
     t0 = time.time()
     try:
-        with multiprocessing.Pool() as p:
+        with multiprocessing.Pool(8) as p:
             p.map(comp, benches)
     except Exception as e:
         print("Compilation failed, exiting")
@@ -188,6 +189,10 @@ def main():
         sys.exit(1)
 
     t_compiled = time.time()
+    if args.repeat == 0:
+        print("compilation took {} s.".format(t_compiled-t0))
+        print("Repeat value is zero. Exiting.")
+        return
 
     outfile = sys.stdout
     existing = {}
@@ -213,11 +218,17 @@ def main():
         args.warmup = False
         args.repeat = 1
 
-    for b in benches:
+    for i, b in enumerate(benches):
         try:
-            print("running: {}".format(b.name), flush=True)
+            print("\nrunning {}/{}: {}".format(i, len(benches), b.name), flush=True)
             if b.name in existing:
                 print("result already exists, skipping", flush=True)
+                continue
+            if (b.name.startswith("tensorAccessor")
+                or b.name.startswith("matern")
+                or b.name.startswith("wyllie")
+                or b.name.startswith("sort-sycl")):
+                print("will likely timeout, skipping", flush=True)
                 continue
             time.sleep(1)
 
@@ -226,7 +237,8 @@ def main():
 
             all_res = []
             for i in range(args.repeat):
-                all_res.append(b.run(args.vtune_root_prefix, args.vtune_root_suffix, args.numactl_args, extra_env))
+                all_res.append(b.run(args.vtune_root_prefix, args.vtune_root_suffix,
+                                     args.numactl_args, extra_env))
             # take the minimum result
             res_min = min(all_res)
             res_avg = sum(all_res) / len(all_res)
@@ -237,7 +249,8 @@ def main():
                 res_stddev = 0
                 res_coefvar = 0
 
-            print(b.name + "," + str(res_min)  + "," + str(res_avg)  + "," + str(res_stddev) + "," + str(res_coefvar), file=outfile, flush=True)
+            print(b.name + "," + str(res_min)  + "," + str(res_avg)  + "," + str(res_stddev) +
+                  "," + str(res_coefvar), file=outfile, flush=True)
         except Exception as err:
             print("Error running: {}".format(b.name), flush=True)
             print(err, flush=True)

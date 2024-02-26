@@ -68,7 +68,7 @@ int main(int argc, char* argv[]) {
   hipMalloc((void**)&d_output, sizeof(float) * numElem);
   hipMemcpy(d_input, input, sizeof(float) * numElem, hipMemcpyHostToDevice);
 
-  dim3 global_work_size ((numSlice+BLOCK_SIZE-1)/BLOCK_SIZE*BLOCK_SIZE);
+  dim3 global_work_size ((numSlice+BLOCK_SIZE-1)/BLOCK_SIZE);
   dim3 local_work_size (BLOCK_SIZE);
 
   hipDeviceSynchronize();

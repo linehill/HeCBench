@@ -39,3 +39,10 @@ burger-hip
 cooling-hip
 fresnel-hip
 goulash-hip
+
+miniFE-sycl
+sc-sycl
+p2p-sycl
+tensorT-sycl
+quicksort-sycl
+bsw-hip

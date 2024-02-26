@@ -35,10 +35,10 @@ struct ApplesOnTrees
   int trees[TREE_NUM];
 };
 
+template<int treeSize>
 __global__
 void AoSKernel(const AppleTree *__restrict__ trees, 
-               int *__restrict__ outBuf,
-               int treeSize)
+               int *__restrict__ outBuf)
 {
   uint gid = blockIdx.x * blockDim.x + threadIdx.x;
   uint res = 0;
@@ -49,10 +49,10 @@ void AoSKernel(const AppleTree *__restrict__ trees,
   outBuf[gid] = res;
 }
 
+template<int treeSize>
 __global__
 void SoAKernel(const ApplesOnTrees *__restrict__ applesOnTrees,
-               int *__restrict__ outBuf,
-               int treeSize)
+               int *__restrict__ outBuf)
 {
   uint gid = blockIdx.x * blockDim.x + threadIdx.x;
   uint res = 0;
@@ -128,8 +128,9 @@ int main(int argc, char * argv[])
   hipDeviceSynchronize();
   auto start = std::chrono::steady_clock::now();
 
+  auto AoSK = AoSKernel<treeSize>;
   for (int i = 0; i < iterations; i++)
-    hipLaunchKernelGGL(AoSKernel, grid, block, 0, 0, (AppleTree*)inputBuffer, outputBuffer, treeSize);
+    hipLaunchKernelGGL(AoSK, grid, block, 0, 0, (AppleTree*)inputBuffer, outputBuffer);
 
   hipDeviceSynchronize();
   auto end = std::chrono::steady_clock::now();
@@ -164,8 +165,9 @@ int main(int argc, char * argv[])
   hipDeviceSynchronize();
   start = std::chrono::steady_clock::now();
 
+  auto SoAK = SoAKernel<treeSize>;
   for (int i = 0; i < iterations; i++)
-    hipLaunchKernelGGL(SoAKernel, grid, block, 0, 0, (ApplesOnTrees*)inputBuffer, outputBuffer, treeSize);
+    hipLaunchKernelGGL(SoAK, grid, block, 0, 0, (ApplesOnTrees*)inputBuffer, outputBuffer);
 
   hipDeviceSynchronize();
   end = std::chrono::steady_clock::now();
