@@ -13,6 +13,7 @@
 typedef unsigned int uint32_t;
 
 void LFIB4(uint32_t n, uint32_t *x) {
+  #pragma omp simd safelen(32)
   for (uint32_t k = P4; k < n; k++) {
     x[k] = x[k - P1] + x[k - P2] + x[k - P3] + x[k - P4];
   }

@@ -173,20 +173,20 @@ void colsGPU(uint32_t *x, int s, int r, sycl::nd_item<1> &item,
   }
 }
 
-void gLFIB4(sycl::queue &q, uint32_t n, uint32_t *x, int s, int r, uint32_t *seed) {
+void gLFIB4(sycl::queue &qio, sycl::queue &qooo, uint32_t n, uint32_t *x, int s, int r, uint32_t *seed) {
 
-  auto e_copy_x = q.memcpy(x, seed, sizeof(uint32_t) * P4);
+  auto e_copy_x = qio.memcpy(x, seed, sizeof(uint32_t) * P4);
 
   uint32_t one = 1;
 
-  uint32_t *y = sycl::malloc_device<uint32_t>(3 * P4, q);
-  q.memset(y + P4 * 2, 0, P4 * sizeof(uint32_t));
-  q.memcpy(y + P4 * 2, &one, sizeof(uint32_t));
+  uint32_t *y = sycl::malloc_device<uint32_t>(3 * P4, qio);
+  qio.memset(y + P4 * 2, 0, P4 * sizeof(uint32_t));
+  qio.memcpy(y + P4 * 2, &one, sizeof(uint32_t)).wait();
 
   sycl::range<1> gws (P4);
   sycl::range<1> lws (P4);
 
-  q.submit([&](sycl::handler &cgh) {
+  qooo.submit([&](sycl::handler &cgh) {
     sycl::local_accessor<uint32_t, 1> cx (sycl::range<1>(2 * P4), cgh);
     cgh.parallel_for<class firstCol>(
       sycl::nd_range<1>(gws, lws), [=](sycl::nd_item<1> item) {
@@ -194,18 +194,19 @@ void gLFIB4(sycl::queue &q, uint32_t n, uint32_t *x, int s, int r, uint32_t *see
     });
   });
 
-  q.submit([&](sycl::handler &cgh) {
+  qooo.submit([&](sycl::handler &cgh) {
     sycl::local_accessor<uint32_t, 1> cy (sycl::range<1>(3 * P4), cgh);
     cgh.parallel_for<class colY>(
       sycl::nd_range<1>(gws, lws), [=](sycl::nd_item<1> item) {
       colYGPU(y, s, item, cy.get_pointer());
     });
   });
-
+  qooo.wait();
+  
   sycl::range<1> gws2 (2*P4);
   sycl::range<1> lws2 (2*P4);
 
-  q.submit([&](sycl::handler &cgh) {
+  qio.submit([&](sycl::handler &cgh) {
     sycl::local_accessor<uint32_t, 1> a0 (sycl::range<1>(3 * P4), cgh);
     sycl::local_accessor<uint32_t, 1> b0 (sycl::range<1>(2 * P4), cgh);
     sycl::local_accessor<uint32_t, 1> c0 (sycl::range<1>(2 * P4), cgh);
@@ -219,7 +220,7 @@ void gLFIB4(sycl::queue &q, uint32_t n, uint32_t *x, int s, int r, uint32_t *see
   });
 
   sycl::range<1> gws3 ((r / LKNB + (r % LKNB ? 1 : 0)) * P4);
-  q.submit([&](sycl::handler &cgh) {
+  qio.submit([&](sycl::handler &cgh) {
     sycl::local_accessor<uint32_t, 2> cx (sycl::range<2>(LKNB, 2 * P4), cgh);
     cgh.parallel_for<class cols>(
       sycl::nd_range<1>(gws3, lws), [=](sycl::nd_item<1> item) {
@@ -227,7 +228,7 @@ void gLFIB4(sycl::queue &q, uint32_t n, uint32_t *x, int s, int r, uint32_t *see
     });
   });
 
-  sycl::free(y, q);
+  sycl::free(y, qio);
 }
 
 int main(int argc, char **argv) {
@@ -244,9 +245,12 @@ int main(int argc, char **argv) {
   uint32_t *x = (uint32_t*) malloc(n * sizeof(uint32_t));
 
 #ifdef USE_GPU
-  sycl::queue q(sycl::gpu_selector_v, sycl::property::queue::in_order());
+  // io = in-order, ooo = out-of-order.
+  sycl::queue qio(sycl::gpu_selector_v, sycl::property::queue::in_order());
+  sycl::queue qooo(sycl::gpu_selector_v);
 #else
-  sycl::queue q(sycl::cpu_selector_v, sycl::property::queue::in_order());
+  sycl::queue qio(sycl::cpu_selector_v, sycl::property::queue::in_order());
+  sycl::queue qooo(sycl::cpu_selector_v);
 #endif
 
   for (uint32_t r = 16; r <= 4096; r = r * 2) {
@@ -272,17 +276,17 @@ int main(int argc, char **argv) {
     std::chrono::duration<float> host_time = end - start;
 
     // compute on the device
-    uint32_t *x_d = sycl::malloc_device<uint32_t>(r * s, q);
+    uint32_t *x_d = sycl::malloc_device<uint32_t>(r * s, qio);
 
     start = std::chrono::steady_clock::now();
-    gLFIB4(q, n, x_d, s, r, z);
+    gLFIB4(qio, qooo, n, x_d, s, r, z);
     end = std::chrono::steady_clock::now();
     std::chrono::duration<float> device_time = end - start;
     printf("r = %d | host time = %lf | device time = %lf | speedup = %.1f ",
       r, host_time.count(), device_time.count(), host_time.count() / device_time.count());
 
     // verify
-    q.memcpy(z, x_d, sizeof(uint32_t) * n).wait();
+    qio.memcpy(z, x_d, sizeof(uint32_t) * n).wait();
 
     ok = true;
     for (uint32_t i = 0; i < n; i++) {
@@ -295,7 +299,7 @@ int main(int argc, char **argv) {
     if (!ok) break;
 
     free(z);
-    sycl::free(x_d, q);
+    sycl::free(x_d, qio);
   }
 
   free(x);
