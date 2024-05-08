@@ -60,7 +60,7 @@ class Benchmark:
         if self.verbose:
             out = subprocess.PIPE
 
-        proc = subprocess.run(["make"] + self.MAKE_ARGS, cwd=self.path, capture_output=True, encoding="ascii")
+        proc = subprocess.run(["make"] + self.MAKE_ARGS, cwd=self.path, capture_output=True)
         try:
             proc.check_returncode()
         except subprocess.CalledProcessError as e:
