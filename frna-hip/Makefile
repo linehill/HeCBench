@@ -23,7 +23,12 @@ obj = $(c_source:.c=.o) $(cuda_source:.cu=.o)
 #===============================================================================
 
 # Standard Flags
-CFLAGS := $(EXTRA_CFLAGS) -DINT -std=c++14 -x hip -D__HIP_PLATFORM_AMD__ -Wall -I. -I../frna-cuda
+CFLAGS := $(EXTRA_CFLAGS) -DINT -std=c++14 -I. -I../frna-cuda
+
+# Compilation flags for clang-based platforms (amd, chipstar).
+ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+  CFLAGS +=  -x hip -D__HIP_PLATFORM_AMD__ -Wall
+endif
 
 # Linker Flags
 LDFLAGS = 

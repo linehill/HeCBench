@@ -22,7 +22,12 @@ obj = $(source:.cu=.o)
 #===============================================================================
 
 # Standard Flags
-CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -Wall -I../rowwiseMoments-cuda
+CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -I../rowwiseMoments-cuda
+
+# Compilation flags for clang-based platforms (amd, chipstar).
+ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+  CFLAGS += -Wall
+endif
 
 # Linker Flags
 LDFLAGS = 

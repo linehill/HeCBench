@@ -24,6 +24,11 @@ CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -I../mcmd-cuda \
           -D_MWAITXINTRIN_H_INCLUDED -D_FORCE_INLINES -D__STRICT_ANSI__ \
           -DGPU
 
+# Compilation flags for clang-based platforms (amd, chipstar).
+ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+  CFLAGS += -Wall
+endif
+
 # Linker Flags
 LDFLAGS = 
 

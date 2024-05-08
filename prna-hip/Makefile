@@ -23,7 +23,12 @@ obj = main.o base.o param.o util.o prna.o
 #===============================================================================
 
 # Standard Flags
-CFLAGS := $(EXTRA_CFLAGS) -DFLOAT -std=c++14 -x hip -D__HIP_PLATFORM_AMD__ -Wall -I. -I../prna-cuda
+CFLAGS := $(EXTRA_CFLAGS) -DFLOAT -std=c++14 -I. -I../prna-cuda
+
+# Compilation flags for clang-based platforms (amd, chipstar).
+ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+  CFLAGS += -x hip  -D__HIP_PLATFORM_AMD__ -Wall
+endif
 
 # Linker Flags
 LDFLAGS = 

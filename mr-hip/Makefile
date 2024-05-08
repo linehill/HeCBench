@@ -24,9 +24,9 @@ obj = $(source:.cu=.o)
 # Standard Flags
 CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -I../mr-cuda
 
-# CFLAGS for non-NVidia platforms.
+# Compilation flags for clang-based platforms (amd, chipstar).
 ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
-  CFLAGS += -Wno-narrowing -Wall
+  CFLAGS += -Wall -Wno-narrowing
 endif
 
 # Linker Flags

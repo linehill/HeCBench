@@ -36,7 +36,12 @@ obj = main.o permutation_testing.o utils.o statistical_test.o \
 #===============================================================================
 
 # Standard Flags
-CFLAGS := -std=c++14 -Wall -I../permutate-cuda
+CFLAGS := -std=c++14 -I../permutate-cuda
+
+# Compilation flags for clang-based platforms (amd, chipstar).
+ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+  CFLAGS += -Wall
+endif
 
 # Linker Flags
 LDFLAGS = 

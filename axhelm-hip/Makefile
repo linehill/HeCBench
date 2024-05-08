@@ -20,7 +20,12 @@ obj = main.o meshBasis.o
 #===============================================================================
 
 # Standard Flags
-CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -Wall -Ddfloat=float -Ddlong=int 
+CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -Ddfloat=float -Ddlong=int
+
+# Compilation flags for clang-based platforms (amd, chipstar).
+ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+  CFLAGS += -Wall
+endif
 
 # Linker Flags
 LDFLAGS = BlasLapack/libBlasLapack.a -lgfortran
@@ -45,7 +50,7 @@ $(program): $(obj) BlasLapack/libBlasLapack.a
 
 main.o : main.cu axhelmKernel.cpp axhelmReference.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
-	
+
 meshBasis.o : meshBasis.cpp meshBasis.hpp
 	$(CC) $(CFLAGS) -c $< -o $@
 

@@ -23,7 +23,12 @@ obj = $(source:.cu=.o)
 #===============================================================================
 
 # Standard Flags
-CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -Wall -DMAP_SIZE=$(INPUT_SIZE)
+CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -DMAP_SIZE=$(INPUT_SIZE)
+
+# Compilation flags for clang-based platforms (amd, chipstar).
+ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+  CFLAGS += -Wall
+endif
 
 # Linker Flags
 LDFLAGS = 

@@ -24,12 +24,12 @@ obj = main.o shrUtils.o cmd_arg_reader.o reference.o
 # Standard Flags
 CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -I../boxfilter-sycl
 
-# CFLAGS for non-NVidia platforms.
+# Compilation flags for clang-based platforms (amd, chipstar).
 ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
   CFLAGS += -Wall
 endif
 
-# CFLAGS for NVidia platform.
+# Compilation flags for NVidia platform.
 ifneq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
   CFLAGS += -I../boxfilter-cuda
 endif

@@ -22,7 +22,12 @@ obj = main.o kernels.o util.o parse.o sequential.o
 #===============================================================================
 
 # Standard Flags
-CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -Wall -I../hbc-cuda
+CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -I../hbc-cuda
+
+# Compilation flags for clang-based platforms (amd, chipstar).
+ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+  CFLAGS += -Wall
+endif
 
 # Linker Flags
 LDFLAGS = 

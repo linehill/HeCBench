@@ -90,7 +90,12 @@ obj = $(c_src:.c=.o) $(cpp_src:.cpp=.o) $(hip_src:.cu=.o)
 #===============================================================================
 
 # Standard Flags
-CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -Wall -x hip
+CFLAGS := $(EXTRA_CFLAGS) -std=c++14
+
+# Compilation flags for clang-based platforms (amd, chipstar).
+ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+  CFLAGS +=  -Wall -x hip
+endif
 
 # Linker Flags
 LDFLAGS = -lz -lpthread

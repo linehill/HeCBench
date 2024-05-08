@@ -24,7 +24,12 @@ obj = kernel.o fim.o StructuredEikonal.o \
 #===============================================================================
 
 # Standard Flags
-CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -Wall -I../eikonal-cuda
+CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -I../eikonal-cuda
+
+# Compilation flags for clang-based platforms (amd, chipstar).
+ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+  CFLAGS += -Wall
+endif
 
 # Linker Flags
 LDFLAGS = 

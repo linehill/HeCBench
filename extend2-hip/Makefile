@@ -22,7 +22,12 @@ obj = main.o read_data.o
 #===============================================================================
 
 # Standard Flags
-CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -Wall -I../extend2-sycl
+CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -I../extend2-sycl
+
+# Compilation flags for clang-based platforms (amd, chipstar).
+ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+  CFLAGS += -Wall
+endif
 
 # Linker Flags
 LDFLAGS = 

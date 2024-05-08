@@ -22,7 +22,12 @@ obj = $(source:.cu=.o)
 #===============================================================================
 
 # Standard Flags
-CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -Wall 
+CFLAGS := $(EXTRA_CFLAGS) -std=c++14
+
+# Compilation flags for clang-based platforms (amd, chipstar).
+ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+  CFLAGS += -Wall
+endif
 
 # Linker Flags
 LDFLAGS = 
@@ -49,9 +54,9 @@ main.o: main.cu utils.cpp utils.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 curvilinear4sg.o : curvilinear4sg.cu \
-       	           kernel1.cpp \
+	           kernel1.cpp \
 	           kernel2.cpp \
-       	           kernel3.cpp \
+	           kernel3.cpp \
 	           kernel4.cpp \
 	           kernel5.cpp \
 	           utils.h \

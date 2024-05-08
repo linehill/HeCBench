@@ -20,9 +20,14 @@ obj = main.o sptrsv_syncfree.o
 #===============================================================================
 
 # Standard Flags
-CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -Wall \
+CFLAGS := $(EXTRA_CFLAGS) -std=c++14 \
           -DWARP_SIZE=64 -DWARP_PER_BLOCK=8 \
           -DVALUE_TYPE=double -I../sptrsv-sycl
+
+# Compilation flags for clang-based platforms (amd, chipstar).
+ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+  CFLAGS += -Wall
+endif
 
 # Linker Flags
 LDFLAGS = 

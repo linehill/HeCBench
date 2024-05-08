@@ -22,7 +22,12 @@ obj = main.o reference.o su_cdp.o su_gather.o su_trace.o log.o parser.o
 #===============================================================================
 
 # Standard Flags
-CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -Wall -I$(inc)
+CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -I$(inc)
+
+# Compilation flags for clang-based platforms (amd, chipstar).
+ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+  CFLAGS += -Wall
+endif
 
 # Linker Flags
 LDFLAGS = 

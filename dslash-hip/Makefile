@@ -27,9 +27,13 @@ CFLAGS := $(EXTRA_CFLAGS) -std=c++14 \
           -DMILC_COMPLEX \
           -DLDIM=32 \
           -DPRECISION=2 \
-          -Wall \
           -fopenmp \
           -I../include
+
+# Compilation flags for clang-based platforms (amd, chipstar).
+ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+  CFLAGS += -Wall
+endif
 
 # Linker Flags
 LDFLAGS = 

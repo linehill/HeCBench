@@ -22,7 +22,12 @@ obj = main.o distance.o
 #===============================================================================
 
 # Standard Flags
-CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -Wall -I../haversine-cuda/
+CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -I../haversine-cuda/
+
+# Compilation flags for clang-based platforms (amd, chipstar).
+ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+  CFLAGS += -Wall
+endif
 
 # Linker Flags
 LDFLAGS = 

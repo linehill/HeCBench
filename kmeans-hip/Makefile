@@ -3,7 +3,12 @@ OPTIMIZE  = yes
 DEBUG     = no
 
 # Standard flags
-CFLAGS := $(EXTRA_CFLAGS) -std=c++11 -Wall
+CFLAGS := $(EXTRA_CFLAGS) -std=c++11
+
+# Compilation flags for clang-based platforms (amd, chipstar).
+ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+  CFLAGS += -Wall
+endif
 
 
 # Debug Flags

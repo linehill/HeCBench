@@ -25,11 +25,16 @@ obj = $(source:.cu=.o)
 
 # Standard Flags
 CFLAGS := -DNX=400 \
-       	  -DNZ=200 \
+	  -DNZ=200 \
 	  -DSIM_TIME=600 \
 	  -DDATA_SPEC=DATA_SPEC_THERMAL \
           -I$(MPI_INCLUDE) \
-          -std=c++14 -Wall
+          -std=c++14
+
+# Compilation flags for clang-based platforms (amd, chipstar).
+ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+  CFLAGS += -Wall
+endif
 
 # Linker Flags
 LDFLAGS = -L$(MPI_LIB_DIR) -lmpi

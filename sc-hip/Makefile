@@ -23,7 +23,12 @@ obj = main.o device_sc.o host_sc.o
 #===============================================================================
 
 # Standard Flags
-CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -Wall -I../sc-cuda
+CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -I../sc-cuda
+
+# Compilation flags for clang-based platforms (amd, chipstar).
+ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+  CFLAGS += -Wall
+endif
 
 # Linker Flags
 LDFLAGS = -lpthread

@@ -24,7 +24,7 @@ obj = main.o kernel.o host_task.o
 # Standard Flags
 CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -I../tqs-cuda
 
-# CFLAGS for non-NVidia platforms.
+# Compilation flags for clang-based platforms (amd, chipstar).
 ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
   CFLAGS += -Wall
 endif

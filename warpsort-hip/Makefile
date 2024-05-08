@@ -23,7 +23,12 @@ obj = main.o warpsort.o
 
 # Standard Flags
 CFLAGS := $(EXTRA_CFLAGS) -DWARP_SIZE=32 -DHALF_WARP_SIZE=16 \
-          -std=c++14 -I. -Wall
+          -std=c++14 -I.
+
+# Compilation flags for clang-based platforms (amd, chipstar).
+ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+  CFLAGS += -Wall
+endif
 
 # Linker Flags
 LDFLAGS = 
