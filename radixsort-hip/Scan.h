@@ -39,4 +39,23 @@ inline __device__ uint4 make_uint4(uint s)
     return make_uint4(s, s, s, s);
 }
 
+#ifdef __HIP_PLATFORM_NVIDIA__
+inline __device__ uint4 operator+(uint4 a, uint4 b)
+{
+    return make_uint4(a.x + b.x, a.y + b.y, a.z + b.z,  a.w + b.w);
+}
+inline __device__ void operator+=(uint4 &a, uint4 b)
+{
+    a.x += b.x;
+    a.y += b.y;
+    a.z += b.z;
+    a.w += b.w;
+}
+
+inline __device__ uint4 operator-(uint4 a, uint4 b)
+{
+    return make_uint4(a.x - b.x, a.y - b.y, a.z - b.z,  a.w - b.w);
+}
+#endif // __CUDACC__
+
 #endif
