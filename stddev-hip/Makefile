@@ -40,7 +40,11 @@ endif
 
 # Optimization Flags
 ifeq ($(OPTIMIZE),yes)
-  CFLAGS += -O3 -munsafe-fp-atomics
+  CFLAGS += -O3
+
+  ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+    CFLAGS += -munsafe-fp-atomics
+  endif
 endif
 
 #===============================================================================

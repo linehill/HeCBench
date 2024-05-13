@@ -29,6 +29,10 @@ ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
   CFLAGS += -Wall
 endif
 
+ifneq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+  CFLAGS += --expt-relaxed-constexpr
+endif
+
 # Linker Flags
 LDFLAGS = 
 

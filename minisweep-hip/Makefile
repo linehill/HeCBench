@@ -29,6 +29,12 @@ ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
   CFLAGS += -Wall
 endif
 
+# CFLAGS for NVidia platform.
+ifneq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+  # sm_60 is minimum for atomicAdd(double *, double).
+  CFLAGS += -arch=sm_60
+endif
+
 # Linker Flags
 LDFLAGS = 
 
