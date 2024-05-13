@@ -15,6 +15,10 @@
 #include <hip/hip_runtime.h>
 #include "shrUtils.h"
 
+#ifdef __HIP_PLATFORM_NVIDIA__
+#include "helper_math.h"
+#endif
+
 extern void BoxFilterHost(unsigned int* uiInputImage, unsigned int* uiTempImage, unsigned int* uiOutputImage, 
                           unsigned int uiWidth, unsigned int uiHeight, int iRadius, float fScale );
 

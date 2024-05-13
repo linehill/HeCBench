@@ -29,6 +29,11 @@ ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
   CFLAGS += -Wall
 endif
 
+# CFLAGS for NVidia platform.
+ifneq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+  CFLAGS += -I../boxfilter-cuda
+endif
+
 # Linker Flags
 LDFLAGS = 
 
