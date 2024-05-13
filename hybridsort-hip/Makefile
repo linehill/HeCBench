@@ -3,7 +3,12 @@ OPTIMIZE  = yes
 DEBUG     = no
 
 # Standard flags
-CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -Wall
+CFLAGS := $(EXTRA_CFLAGS) -std=c++14
+
+# CFLAGS for non-NVidia platforms.
+ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+  CFLAGS += -Wall
+endif
 
 # Linker flags
 LDFLAGS = -lm
@@ -38,7 +43,7 @@ bucketsort.o: bucketsort.cu \
 	kernel_bucketprefix.h \
 	kernel_histogram.h \
 	kernel_bucketcount.h \
-       	kernel_bucketsort.h  
+	kernel_bucketsort.h
 	$(CC) $(CFLAGS) -o bucketsort.o -c bucketsort.cu
 
 mergesort.o: mergesort.cu mergesort.h kernel_mergeSortPass.h

@@ -23,7 +23,12 @@ obj = main.o kernel.o host_task.o
 #===============================================================================
 
 # Standard Flags
-CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -Wall -I../pad-cuda
+CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -I../pad-cuda
+
+# CFLAGS for non-NVidia platforms.
+ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+  CFLAGS += -Wall
+endif
 
 # Linker Flags
 LDFLAGS = -lpthread

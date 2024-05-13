@@ -22,7 +22,12 @@ obj = main.o shrUtils.o cmd_arg_reader.o reference.o
 #===============================================================================
 
 # Standard Flags
-CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -Wall -I../boxfilter-sycl
+CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -I../boxfilter-sycl
+
+# CFLAGS for non-NVidia platforms.
+ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+  CFLAGS += -Wall
+endif
 
 # Linker Flags
 LDFLAGS = 

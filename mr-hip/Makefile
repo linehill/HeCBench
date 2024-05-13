@@ -22,7 +22,12 @@ obj = $(source:.cu=.o)
 #===============================================================================
 
 # Standard Flags
-CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -Wno-narrowing -Wall -I../mr-cuda
+CFLAGS := $(EXTRA_CFLAGS) -std=c++14 -I../mr-cuda
+
+# CFLAGS for non-NVidia platforms.
+ifeq ($(findstring $(HIP_PLATFORM), nvidia nvcc),)
+  CFLAGS += -Wno-narrowing -Wall
+endif
 
 # Linker Flags
 LDFLAGS = 
