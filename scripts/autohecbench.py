@@ -69,7 +69,7 @@ class Benchmark:
                 print(e.stdout, file=sys.stderr)
             if e.stderr:
                 print(e.stderr, file=sys.stderr)
-            raise(e)
+            return
 
         if self.verbose:
             print(proc.stdout)
