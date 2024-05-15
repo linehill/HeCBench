@@ -44,7 +44,6 @@ bucketsort.o: bucketsort.cu \
 	kernel_histogram.h \
 	kernel_bucketcount.h \
 	kernel_bucketsort.h
->>>>>>> 696cc2ca (Adjust more HIP makefiles for NVidia platform)
 	$(CC) $(CFLAGS) -o bucketsort.o -c bucketsort.cu
 
 mergesort.o: mergesort.cu mergesort.h kernel_mergeSortPass.h
