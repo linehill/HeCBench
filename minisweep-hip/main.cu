@@ -11,6 +11,13 @@
 /*===========================================================================*/
 /*---Main---*/
 
+void check_launch() {
+  if (hipGetLastError() == hipSuccess)
+    return;
+  printf("Kernel launch failed!\n");
+  abort();
+}
+
 int main( int argc, char** argv )
 {
   Arguments args;
@@ -321,6 +328,7 @@ int main( int argc, char** argv )
           1, //proc_x_min, 
           1, //proc_x_max, 
           stepinfoall, d_facexz);
+      check_launch();
 
 #ifdef DEBUG
       hipMemcpy(facexz, d_facexz, facexz_size * sizeof(P), hipMemcpyDeviceToHost);
@@ -334,6 +342,7 @@ int main( int argc, char** argv )
           1, //proc_y_min, 
           1, //proc_y_max, 
           stepinfoall, d_faceyz);
+      check_launch();
 
 #ifdef DEBUG
       hipMemcpy(faceyz, d_faceyz, faceyz_size * sizeof(P), hipMemcpyDeviceToHost);
@@ -356,6 +365,7 @@ int main( int argc, char** argv )
           d_vi,
           d_vo,
           d_vslocal);
+      check_launch();
 
       if (is_last_step) { 
 
