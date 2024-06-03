@@ -204,13 +204,16 @@ int main(int argc, char *argv[]) {
   srand(seed);
 
   for (int i = 0; i < size; i++) {
-    data_gpu[i] = data_cpu[i] = rand() % 1000;
+    data_cpu[i] = rand() % 1000;
   }
 
   std::cout << "Bitonic sort (parallel)..\n";
   auto start = std::chrono::steady_clock::now();
 
-  ParallelBitonicSort(data_gpu, n);
+  for (int j = 0; j < 10; j++) {
+    memcpy(data_gpu, data_cpu, size_bytes);
+    ParallelBitonicSort(data_gpu, n);
+  }
 
   auto end = std::chrono::steady_clock::now();
   auto time = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
