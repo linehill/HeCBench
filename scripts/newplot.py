@@ -21,20 +21,21 @@ import math
 def geomean(xs):
         return math.exp(math.fsum(math.log(x) for x in xs) / len(xs))
 
-parser = OptionParser(description="Takes as input two CSV files produced by HeCBench's runner script (autohecbench.py), and produces a matplotlib chart with data from one CSV normalized to other CSV. Note that since hecbench.py produces CSV with timings, the input files are internally swapped to produce relative speedups (A = 3x faster B) rather than relative timing (A = 0.33 of B's time).")
+parser = OptionParser(description="Takes at least two CSV files produced by HeCBench's runner script (autohecbench.py) - one used as baseline (-b) and others used comparison (-c), and produces a mapplotlib bar chart with the given data sets normalized to the baseline CSV (computed as 'baseline / compared[i]').")
 parser.add_option("-b", "--input-file-baseline", dest="input_base",
                   help="CSV file with baseline data", metavar="PATH")
 parser.add_option("-c", "--input-file-compared", dest="input_comps",
                   action='append',
-                  help="CSV file with compared data", metavar="PATH")
+                  help="CSV file with compared data. Can be given multiple times to form a multibar chart. ", metavar="PATH")
 parser.add_option("-o", "--output-file", dest="output", default=None, metavar="PATH",
                   help="if specified, write output to this file (SVG,PDF,..) otherwise show chart on screen")
 
-parser.add_option("-e", "--errorbars", dest="errbars", default=False, action="store_true",
-                  help="draw error bars, default = don't draw")
+# parser.add_option("-e", "--errorbars", dest="errbars", default=False, action="store_true",
+#                   help="draw error bars, default = don't draw")
 
 parser.add_option("-g", "--geomean", dest="geomean", default=False, action="store_true",
-                  help="draw geometric mean, default = don't draw")
+                  help="draw geometric mean based on first compared data" \
+                  + " set, default = don't draw")
 
 parser.add_option("--color", dest="color", default=None,
                   help="Adjust chart bar color (optional, default = None)", metavar="STRING")
@@ -64,6 +65,11 @@ parser.add_option("-z", "--zlabel", dest="zlabel", default=None,
 
 parser.add_option("-v", "--bar-values", dest="bar_values", default=True, action="store_false",
                   help="do not draw values of each bar, default = draw")
+parser.add_option("-l", "--legend-names", dest="legend_names", default="",
+                  help="Names used in legend for '--input-file-compared' inputs.")
+parser.add_option("--fig-height", dest='fig_height', default=None,
+                  help="Sets figure height. default = use matplotlib's default")
+
 
 (options, args) = parser.parse_args()
 if (not options.input_comps) or (not options.input_base):
@@ -154,17 +160,24 @@ for data_group in range(1, len(zipped_data)):
 sorted_bench_names, sorted_mins, sorted_means, sorted_stddevs = zip(*zipped_data[0])
 
 label_pos = np.arange(len(sorted_bench_names))  # the label locations
-fig, ax = plt.subplots(layout='constrained')
+fig, ax = plt.subplots()
 num_groups = len(zipped_data)
-bar_width = 1.0 / (num_groups + 1)
+bar_width = 0.68
+if num_groups > 1:
+        gap_between_groups = 0.5
+        bar_width = 1.0 / (num_groups + gap_between_groups)
 
-set_labels = "ABCDEFD"
+legend_names = options.legend_names.split(",")
+if len(legend_names) < num_groups:
+        legend_names += ["use '-l str0,str1,...'"] \
+                * (num_groups - len(legend_names))
 for i in range(num_groups):
         _, sorted_mins, *_ = zip(*zipped_data[i])
         offset = bar_width * i
         offseted_sorted_mins = [x - float(options.bottom) for x in sorted_mins]
         rects = ax.bar(label_pos + offset, offseted_sorted_mins, bar_width,
-                       align='edge', bottom=float(options.bottom), label=set_labels[i])
+                       align='edge', bottom=float(options.bottom),
+                       label=legend_names[i])
         if options.bar_values and num_groups == 1:
                 ax.bar_label(rects, padding=3, fmt='%.2f', label_type='edge',
                              rotation='vertical', fontsize='small')
@@ -173,11 +186,14 @@ ax.set_xticks(label_pos + (bar_width * 0.5) * num_groups,
               sorted_bench_names, rotation='vertical', fontsize='small')
 
 if num_groups > 1:
-        ax.legend(loc='upper left', ncols=len(zipped_data))
+        ax.legend(fontsize="small")
 
 # errs = sorted_stddevs
 # if True or not options.errbars: # TODO
 # 	errs = None
+
+if options.fig_height:
+        fig.set_figheight(float(options.fig_height))
 
 if options.style:
 	plt.style.use(options.style)
