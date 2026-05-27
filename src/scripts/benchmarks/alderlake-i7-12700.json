@@ -1,0 +1,603 @@
+{
+    "ace": [
+        "(?:Offload time: )([0-9.+-e]+)(?: \\(ms\\))",
+        [
+            "1"
+        ]
+    ],
+    "adam": [
+        "(?:Average kernel execution time )([0-9.+-e]+)(?: \\(ms\\))",
+        [
+            "10000",
+            "200",
+            "100"
+        ]
+    ],
+    "adv": [
+        "(?:elapsed time=)([0-9.+-e]+)(?: )",
+        [
+            "16",
+            "16",
+            "16"
+        ]
+    ],
+    "aobench": [
+        "(?:Average render time: )([0-9.+-e]+)(?: sec)",
+        [
+            "128"
+        ]
+    ],
+    "aop": [
+        "(?:elapsed time for each run *: )([0-9.+-e]+)(?:ms)",
+        [
+            "-paths",
+            "200"
+        ]
+    ],
+    "asmooth": [
+        "(?:Average filtering time )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "4096",
+            "1",
+            "5",
+            "1"
+        ]
+    ],
+    "asta": [
+        "(?:Average kernel execution time )([0-9.+-e]+)(?: \\(s\\))"
+    ],
+    "atomicCAS": [
+        "(?:Average execution time: )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "1024"
+        ]
+    ],
+    "atomicPerf": [
+        "(?:Average execution time of SingleRangeAtomicOnGlobalMem: )([0-9.+-e]+)(?: \\(us\\))",
+        [
+            "10"
+        ]
+    ],
+    "backprop": [
+        "(?:Device offloading time = )([0-9.+-e]+)(?:\\(s\\))",
+        [
+            "1048576"
+        ]
+    ],
+    "background-subtract": [
+        "(?:Average kernel execution time: )([0-9.+-e]+)(?: \\(us\\))",
+        [
+            "4096", "2048", "1", "102"
+        ]
+    ],
+    "bh": [
+        "(?:Total kernel execution time: )([0-9.+-e]+)(?: s)",
+        [
+            "32",
+            "16"
+        ]
+    ],
+    "bilateral": [
+        "(?:Average kernel execution time \\([1-9]x[1-9]\\) )([0-9.+-e]+)(?: \\(ms\\))",
+        [
+            "128",
+            "128",
+            "0.5",
+            "0.5",
+            "100"
+        ]
+    ],
+    "bitonic-sort": [
+        "(?:Total kernel execution time: )([0-9.+-e]+)(?: \\(ms\\))",
+        [
+            "20",
+            "2"
+        ]
+    ],
+    "black-scholes": [
+        "(?:Processing time using GPU )([0-9.+-e]+)(?: \\(ms\\))",
+        [
+            "1"
+        ]
+    ],
+    "bsearch": [
+        "(?:Average kernel execution time \\(bs[1-9]\\) )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "16384",
+            "1"
+        ]
+    ],
+    "burger": [
+        "(?:Total kernel execution time )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "1024",
+            "1024",
+            "100"
+        ]
+    ],
+    "bwt": [
+        "(?:Device time: )([0-9.+-e]+)(?: (?:s|ms|us))",
+        [
+            "1000000"
+        ]
+    ],
+    "cbsfil": [
+        "(?:Average kernel execution time )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "2048",
+            "2048",
+            "100"
+        ]
+    ],
+    "chi2": [
+        "(?:Average chi_kernel execution time = )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "4000",
+            "4000",
+            "1000",
+            "1000",
+            "256",
+            "100"
+        ]
+    ],
+    "chemv": [
+        "(?:Average execution time of chemv kernels: )([0-9.+-e]+)(?: \\(us\\))",
+        []
+    ],
+    "cobahh": [
+        "(?:Average kernel execution time )([0-9.+-e]+)(?: \\(us\\))",
+        [
+            "1000000",
+            "10"
+        ]
+    ],
+    "complex": [
+        "(?:Average kernel execution time \\([a-z]+\\) )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "100000",
+            "100"
+        ]
+    ],
+    "compute-score": [
+        "(?:Kernel Time = )([0-9.+-e]+)(?: ms)",
+        [
+            "-p=5"
+        ]
+    ],
+    "convolution3D": [
+        "(?:Average kernel execution time of conv3d_s3 kernel: )([0-9.+-e]+)(?: \\(us\\))",
+        [
+            "32","6","16","14","14","5","100"
+        ]
+    ],
+    "convolutionSeparable": [
+        "(?:Average kernel execution time )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "1024",
+            "1024",
+            "100"
+        ]
+    ],
+    "cooling": [
+        "(?:Average kernel execution time )([0-9.+-e]+)(?: \\((?:s|ms|us)\\))",
+        [
+            "10000",
+            "200"
+        ]
+    ],
+    "cross": [
+        "(?:Average execution time of cross[0-9]+ kernel: )([0-9.+-e]+)(?: \\((?:s|ms|us)\\))",
+        [
+            "1000000",
+            "100"
+        ]
+    ],
+    "crs": [
+        "(?:Total encoding time )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "1",
+            "1"
+        ]
+    ],
+    "dct8x8": [
+        "(?:Average DCT8x8 kernel execution time )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "1024",
+            "1024",
+            "100"
+        ]
+    ],
+    "dense-embedding": [
+        "(?:Average execution time of dense embedding kernel \\(k1\\): )([0-9.+-e]+)(?: \\(us\\))",
+        [
+            "4096",
+            "16",
+            "100"
+        ]
+    ],
+    "ecdh": [
+        "(?:: )([0-9.+-e]+)(?: s)",
+        [
+            "50000",
+            "100"
+        ]
+    ],
+    "eigenvalue": [
+        "(?:Average kernel execution time )([0-9.+-e]+)(?: \\(us\\))",
+        [
+            "2048",
+            "100"
+        ]
+    ],
+    "entropy": [
+        "(?:execution time )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "256",
+            "256",
+            "100"
+        ]
+    ],
+    "epistasis": [
+        "(?:Average kernel execution time: )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "100",
+            "500",
+            "100"
+        ]
+    ],
+    "expdist": [
+        "(?:Average kernel execution time )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "2048",
+            "100"
+        ]
+    ],
+    "fdtd3d": [
+        "(?:Average kernel execution time )([0-9.+-e]+)(?: \\((?:s|ms|us)\\))",
+        [
+            "--dimx=128",
+            "--dimy=128",
+            "--timesteps=90"
+        ]
+    ],
+    "fft": [
+        "(?:Average kernel execution time )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "1",
+            "100"
+        ]
+    ],
+    "filter": [
+        "(?:Average execution time of filter \\(shared memory\\) )([0-9.+-e]+)(?: \\(ms\\))",
+        [
+            "1000000",
+            "256",
+            "100"
+        ]
+    ],
+    "floydwarshall": [
+        "(?:Average kernel execution time )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "256",
+            "100",
+            "16"
+        ]
+    ],
+    "fpc": [
+        "(?:fpc2: average device offload time )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "256",
+            "100"
+        ]
+    ],
+    "fwt": [
+        "(?:Average device execution time )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "8"
+        ]
+    ],
+    "gabor": [
+        "(?:Average kernel execution time: )([0-9.+-e]+)(?: \\(us\\))",
+        [
+            "2048",
+            "2048",
+            "100"
+        ]
+    ],
+    "gamma-correction": [
+        "(?:Average kernel execution time )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "1024",
+            "1024",
+            "256",
+            "100"
+        ]
+    ],
+    "gaussian": [
+        "(?:Device offloading time )([0-9.+-e]+)(?: \\(us\\))",
+        [
+            "-q",
+            "-t",
+            "-s",
+            "2048"
+        ]
+    ],
+    "glu": [
+        "(?:Average execution time of GLU kernel \\(split dimension = 2\\): )([0-9.+-e]+)(?: \\(us\\))",
+        [
+            "3",
+            "64",
+            "100"
+        ]
+    ],
+    "goulash": [
+        "(?:total kernel time )([0-9.+-e]+)(?:\\(s\\))",
+        [
+            "101",
+            "0.03"
+        ]
+    ],
+    "gpp": [
+        "(?:Average kernel execution time )([0-9.+-e]+)(?: \\(s\\))"
+    ],
+    "haccmk": [
+        "(?:Average kernel execution time )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "100"
+        ]
+    ],
+    "hausdorff": [
+        "(?:Average execution time of kernels: )([0-9.+-e]+)(?: \\(ms\\))",
+        [
+            "2000",
+            "2000",
+            "100"
+        ]
+    ],
+    "heat": [
+        "(?:Solve time \\(s\\): )([0-9.+-e]+)",
+        [
+            "2048",
+            "100"
+        ]
+    ],
+    "knn": [
+        "(?:100 iterations \\()([0-9.+-e]+)(?: s by iteration\\))",
+        [
+            "1"
+        ]
+    ],
+    "histogram": [
+        "(?:Avg time )([0-9.+-e]+)(?: us )",
+        [
+            "--width=512",
+            "--height=512"
+        ]
+    ],
+    "hwt1d": [
+        "(?:Average device offload time )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "1000000",
+            "100"
+        ]
+    ],
+    "inversek2j": [
+        "(?:Average kernel execution time )([0-9.+-e]+)(?: \\(us\\))",
+        [
+            "../inversek2j-sycl/coord_in.txt",
+            "100"
+        ]
+    ],
+    "iso2dfd": [
+        "(?:Total kernel execution time )([0-9.+-e]+)(?: \\(ms\\))",
+        [
+            "128",
+            "128",
+            "100"
+        ]
+    ],
+    "jenkins-hash": [
+        "(?:Average kernel execution time : )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "256",
+            "10000",
+            "100"
+        ]
+    ],
+    "laplace3d": [
+        "(?:Average kernel execution time: )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "64",
+            "64",
+            "64",
+            "100",
+            "1"
+        ]
+    ],
+    "lif": [
+        "(?:Average kernel execution time: )([0-9.+-e]+)(?: \\(us\\))",
+        [
+            "300",
+            "300",
+            "100"
+        ]
+    ],
+    "matrix-rotate": [
+        "(?:Average kernel execution time: )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "512",
+            "100"
+        ]
+    ],
+    "maxpool3d": [
+        "(?:Average kernel execution time: )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "256",
+            "256",
+            "32",
+            "100"
+        ]
+    ],
+    "mcpr": [
+        "(?:Average execution time of compute_probs_unitStrides kernel: )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "../mcpr-cuda/alphas.csv",
+            "10"
+        ]
+    ],
+    "minisweep": [
+        "(?:kernel time: )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "--niterations",
+            "5"
+        ]
+    ],
+    "mrc": [
+        "(?:Average execution time of MRC2 kernel: )([0-9.+-e]+)(?: \\(us\\))",
+        [
+            "100000",
+            "100"
+        ]
+    ],
+    "murmurhash3": [
+        "(?:Average kernel execution time )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "1000",
+            "100"
+        ]
+    ],
+    "nbody": [
+        "(?:Total Time \\(s\\)[ ]*: )([0-9.+-e]+)",
+        [
+            "1600",
+            "10"
+        ]
+    ],
+    "nlll": [
+        "(?:Average execution time of nll loss forward kernel: )([0-9.+-e]+)(?: \\(us\\))",
+        [
+            "1024",
+            "1000",
+            "100"
+        ]
+    ],
+    "overlap": [
+        "(?:Avg. time when overlapped using [0-9]+ streams.*: )([0-9.+-e]+)(?: ms)"
+    ],
+    "overlay": [
+        "(?:Total kernel execution time: )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "640",
+            "480"
+        ]
+    ],
+    "p4": [
+        "(?:Average execution time of postprocess kernel: )([0-9.+-e]+)(?: \\(us\\))",
+        [
+            "100"
+        ]
+    ],
+    "particle-diffusion": [
+        "(?:Average kernel execution time: )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "10",
+            "5"
+        ]
+    ],
+    "particlefilter": [
+        "(?:Device offloading time: )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "-x",
+            "100",
+            "-y",
+            "100",
+            "-z",
+            "100",
+            "-np",
+            "1000"
+        ]
+    ],
+    "pathfinder": [
+        "(?:Total kernel execution time: )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "300",
+            "300",
+            "100"
+        ]
+    ],
+    "perplexity": [
+        "(?:Average kernel execution time: )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "100",
+            "50",
+            "100"]
+    ],
+    "pns": [
+        "(?:Total device execution time: )([0-9.+-e]+)(?: s)",
+        [
+            "300",
+            "100",
+            "100"
+        ]
+    ],
+    "softmax": [
+        "(?:Average kernel execution time: )([0-9.+-e]+)(?: \\(ms\\))",
+        [
+            "1000",
+            "784",
+            "0",
+            "100"
+        ]
+    ],
+    "simplemoc": [
+        "(?:Total kernel time:       )([0-9.+-e]+)(?: seconds)",
+        [
+            "-s",
+            "5000",
+            "-e",
+            "128",
+            "-n",
+            "10"
+        ]
+    ],
+    "stddev": [
+        "(?:Average execution time of stddev kernels: )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "2048",
+            "1024",
+            "100"
+        ]
+    ],
+    "tissue": [
+        "(?:Average kernel execution time: )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "10",
+            "100"
+        ]
+    ],
+    "tridiagonal": [
+        "(?:Time = )([0-9.+-e]+)(?: s)",
+        [
+            "-num_systems=100"
+        ]
+    ],
+    "vanGenuchten": [
+        "(?:Average kernel execution time: )([0-9.+-e]+)(?: \\(s\\))",
+        [
+            "64",
+            "64",
+            "64",
+            "100"
+        ]
+    ],
+    "winograd": [
+        "(?:Co-execution time: )([0-9.+-e]+)(?: s)"
+    ],
+    "zeropoint": [
+        "(?:Average execution time of zero-point kernel: )([0-9.+-e]+)(?: \\(us\\))",
+        [
+            "200000",
+            "100"
+        ]
+    ]
+}

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+export BENCHMARK_LIST="${ROOT_DIR}/src/scripts/benchmarks/smoketest.json"
+export REPEATS=1
+export WARMUP=0
+export TIMEOUT=10

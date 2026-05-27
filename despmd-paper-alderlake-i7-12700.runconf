@@ -1,0 +1,6 @@
+#!/bin/bash
+
+export BENCHMARK_LIST="${ROOT_DIR}/src/scripts/benchmarks/alderlake-i7-12700.json"
+export REPEATS=10
+export WARMUP=1
+export TIMEOUT=60

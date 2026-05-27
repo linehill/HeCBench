@@ -1,0 +1,10 @@
+{
+    "adam": [
+        "(?:Average kernel execution time )([0-9.+-e]+)(?: \\(ms\\))",
+        [
+            "10",
+            "10",
+            "1"
+        ]
+    ]
+}

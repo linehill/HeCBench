@@ -1,0 +1,6 @@
+#!/bin/bash
+
+export BENCHMARK_LIST="${ROOT_DIR}/src/scripts/benchmarks/subset.json"
+export REPEATS=10
+export WARMUP=1
+export TIMEOUT=600
