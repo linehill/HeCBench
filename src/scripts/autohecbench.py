@@ -68,6 +68,7 @@ class Benchmark:
         self.invert = invert
         self.clean = args.clean
         self.verbose = args.verbose
+        self.run_timeout = args.timeout
 
     def compile(self, shared_data):
         if self.clean:
@@ -104,12 +105,19 @@ class Benchmark:
 
     def run(self):
         cmd = ["./" + self.binary] + self.args
-        proc = subprocess.run(cmd, cwd=self.path, timeout=600,
+        proc = subprocess.run(cmd, cwd=self.path, timeout=self.run_timeout,
                               stdout=subprocess.PIPE, encoding="utf-8")
         out = proc.stdout
         if self.verbose:
             print(" ".join(cmd))
             print(out)
+
+        proc.check_returncode()
+
+        verified = re.search("^PASS$", out, re.MULTILINE) != None
+        if not verified:
+            raise Exception(self.path + ": results were not verified.")
+
         try:
              res = re.findall(self.res_regex, out)
         except re.error as e:
@@ -144,6 +152,8 @@ def main():
                         help='Repeat benchmark run')
     parser.add_argument('--warmup', '-w', type=bool, default=True,
                         help='Run a warmup iteration')
+    parser.add_argument('--timeout', type=int, default=600,
+                        help='Timeout for single benchmark run in seconds.')
     parser.add_argument('--sycl-type', '-t', choices=['cuda', 'hip', 'opencl', 'cpu'], default='cuda',
                         help='Type of SYCL device to use (default is cuda)')
     parser.add_argument('--nvidia-sm', type=int, default=60,
@@ -296,15 +306,18 @@ def main():
         try:
             print(f"running {i}/{len(filtered_benches)}: {b.name}", flush=True)
 
+            t_exec_begin = time.time()
             if args.warmup:
                 b.run()
 
             res = []
             for i in range(args.repeat):
                 res.append(str(b.run()))
+            t_exec_end = time.time()
 
             print(b.name + "," + ", ".join(res), file=outfile)
             summary[b.name]["run"] = "success"
+            summary[b.name]["total_time"] = "{}".format(t_exec_end-t_exec_begin)
         except Exception as e:
             print("Error running: ", b.name)
             print(e)
