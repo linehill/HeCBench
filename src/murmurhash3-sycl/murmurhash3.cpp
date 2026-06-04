@@ -218,7 +218,7 @@ int main(int argc, char** argv)
     }
   }
   if (error) printf("FAIL\n");
-  else printf("SUCCESS\n");
+  else printf("PASS\n");
 
   for (uint32_t i = 0; i < numKeys; i++) {
     free(out[i]);
