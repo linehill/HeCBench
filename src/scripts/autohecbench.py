@@ -295,7 +295,8 @@ def main():
                     recorded_benchmarks.add(bench)
                     # record the status only when it is in the input benchmark list
                     ch_index = bench.find('-')
-                    if bench[:ch_index] in benchmarks.keys():
+                    if (bench[:ch_index] in benchmarks.keys() and
+                        bench in summary):
                         summary[bench]["run"] = "skipped"
                 outfile.seek(0, 2) # seek to end of the file.
             else:
