@@ -33,6 +33,10 @@ class Benchmark:
                 self.MAKE_ARGS.append('CUDA=no')
                 self.MAKE_ARGS.append('HIP=no')
                 self.MAKE_ARGS.append('GPU=no')
+
+            if args.sycl_vendor != 'unknown':
+                self.MAKE_ARGS.append('VENDOR={}'.format(args.sycl_vendor))
+
         elif name.endswith('cuda'):
             self.MAKE_ARGS = ['ARCH=sm_{}'.format(args.nvidia_sm)]
         elif name.endswith('omp'):
@@ -156,6 +160,9 @@ def main():
                         help='Timeout for single benchmark run in seconds.')
     parser.add_argument('--sycl-type', '-t', choices=['cuda', 'hip', 'opencl', 'cpu'], default='cuda',
                         help='Type of SYCL device to use (default is cuda)')
+    parser.add_argument('--sycl-vendor', choices=['unknown', 'AdaptiveCpp'],
+                        default='unknown',
+                        help='SYCL runtime to target.')
     parser.add_argument('--nvidia-sm', type=int, default=60,
                         help='NVIDIA SM version (default is 60)')
     parser.add_argument('--amd-arch', default='gfx908',
