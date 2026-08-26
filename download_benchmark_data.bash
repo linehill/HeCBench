@@ -2,6 +2,8 @@
 
 set -eux
 
+sudo apt install libssl-dev
+
 sh ./tools/install-uv.sh
 export PATH=$PATH:$HOME/.local/bin
 uv tool install dvc[s3]
