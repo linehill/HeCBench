@@ -7,6 +7,7 @@ import argparse
 import json
 import logging
 import traceback
+import psutil
 
 def await_input(prompt: str, is_valid_input) -> str:
     """ Wait the user for input until it is valid. """
@@ -73,6 +74,7 @@ class Benchmark:
         self.clean = args.clean
         self.verbose = args.verbose
         self.run_timeout = args.timeout
+        self.launcher = args.launcher
 
     def compile(self, shared_data):
         if self.clean:
@@ -107,16 +109,31 @@ class Benchmark:
         if self.verbose:
             print(proc.stdout)
 
-    def run(self):
+    def run(self, is_warm_up=False):
         cmd = ["./" + self.binary] + self.args
-        proc = subprocess.run(cmd, cwd=self.path, timeout=self.run_timeout,
-                              stdout=subprocess.PIPE, encoding="utf-8")
-        out = proc.stdout
+
+        if self.launcher:
+            is_warm_up = "1" if is_warm_up else "0"
+            cmd = [self.launcher, self.name, is_warm_up] + cmd
+
+
+        proc = subprocess.Popen(cmd, cwd=self.path,
+                                stdout=subprocess.PIPE, encoding="utf-8")
+        try:
+            out, _ = proc.communicate(timeout=self.run_timeout)
+        except subprocess.TimeoutExpired as e:
+            p = psutil.Process(proc.pid)
+            for c in p.children(recursive=True):
+                c.kill()
+            raise
+
         if self.verbose:
             print(" ".join(cmd))
             print(out)
 
-        proc.check_returncode()
+        returncode = proc.returncode
+        if returncode != 0:
+            raise Exception(f"{cmd} returned {returncode}")
 
         verified = re.search("^PASS$", out, re.MULTILINE) != None
         if not verified:
@@ -140,6 +157,28 @@ class Benchmark:
 def comp(b, d):
     b.compile(d)
 
+# Source - https://stackoverflow.com/a/377028
+# Posted by Jay, modified by community. See post 'Timeline' for change history
+# Retrieved 2026-09-29, License - CC BY-SA 4.0
+#
+# Further modification: return absolute path, raise error instead of
+# returning None.
+def which(program):
+    import os
+    def is_exe(fpath):
+        return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
+
+    fpath, fname = os.path.split(program)
+    if fpath:
+        if is_exe(program):
+            return os.path.abspath(program)
+    else:
+        for path in os.environ.get("PATH", "").split(os.pathsep):
+            exe_file = os.path.join(path, program)
+            if is_exe(exe_file):
+                return os.path.abspath(exe_file)
+
+    raise Exception("not found or not an executable: " + program)
 
 def main():
     parser = argparse.ArgumentParser(description='HeCBench runner')
@@ -187,10 +226,18 @@ def main():
                         help='Benchmark data')
     parser.add_argument('--bench-fails', '-f',
                         help='List of failing benchmarks to ignore')
+    parser.add_argument('--launcher', default=None,
+                        help="Invoke benchmarks through the given launcher. The \
+                              launcher will be invoked as \
+                              'launcher BENCHMARK_NAME WARMUP BENCHMARK_COMMAND BENCHMARK_ARGS...'")
     parser.add_argument('bench', nargs='+',
                         help='Either specific benchmark name or sycl, cuda, or hip')
 
     args = parser.parse_args()
+
+    if args.launcher:
+        # Get absolute path to the launcher because we will change CWD.
+        args.launcher = which(args.launcher)
 
     # setup logging
     numeric_level = getattr(logging, args.log.upper(), None)
@@ -316,7 +363,7 @@ def main():
 
             t_exec_begin = time.time()
             if args.warmup != 0:
-                b.run()
+                b.run(is_warm_up=True)
 
             res = []
             for i in range(args.repeat):
