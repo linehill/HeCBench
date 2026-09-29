@@ -154,7 +154,7 @@ def main():
                         help="If provided, automatically answer yes to the prompt.")
     parser.add_argument('--repeat', '-r', type=int, default=1,
                         help='Repeat benchmark run')
-    parser.add_argument('--warmup', '-w', type=bool, default=True,
+    parser.add_argument('--warmup', '-w', type=int, default=1,
                         help='Run a warmup iteration')
     parser.add_argument('--timeout', type=int, default=600,
                         help='Timeout for single benchmark run in seconds.')
@@ -315,7 +315,7 @@ def main():
             print(f"running {i}/{len(filtered_benches)}: {b.name}", flush=True)
 
             t_exec_begin = time.time()
-            if args.warmup:
+            if args.warmup != 0:
                 b.run()
 
             res = []
