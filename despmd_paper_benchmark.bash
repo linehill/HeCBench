@@ -142,12 +142,15 @@ fi
 cp "${BENCHMARK_LIST}" ${OUTPUT_DIR}/
 
 (
+    export KERNEL_STATS_RESULT_PATH=${OUTPUT_DIR}/pocl-kernel-stats.json
+
     simon_says "${ROOT_DIR}/src/scripts/autohecbench.py" \
-	       --compiler-name="$COMPILER" $SYCL_OPTS \
-	       --sycl-vendor=${SYCL_VENDOR} -r "$REPEATS" \
-	       -w "$WARMUP" --yes-prompt --timeout="$TIMEOUT" --clean \
-	       --bench-data "${BENCHMARK_LIST}" --overwrite \
-	       --summary "${OUTPUT_DIR}"/summary.json \
-	       -o ${OUTPUT_DIR}/benchmarks.csv \
-	       ${BENCHMARK_PREFIX:-}${RUNTIME}
+               --compiler-name="$COMPILER" $SYCL_OPTS \
+               --sycl-vendor=${SYCL_VENDOR} -r "$REPEATS" \
+               -w "$WARMUP" --yes-prompt --timeout="$TIMEOUT" --clean \
+               --bench-data "${BENCHMARK_LIST}" --overwrite \
+               --summary "${OUTPUT_DIR}"/summary.json \
+               -o ${OUTPUT_DIR}/benchmarks.csv \
+               --launcher "${ROOT_DIR}/launcher-capture-pocl-kernel-stats.py" \
+               ${BENCHMARK_PREFIX:-}${RUNTIME}
 )
