@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# Usage: ./despmd_plot.py BASELINE_CSV COMPARE_CSV...
+# Usage: ./despmd_plot.py BASELINE_CSV CONTENDER_CSV...
 
 from optparse import OptionParser
 import matplotlib.pyplot as plt
@@ -108,24 +108,24 @@ def main():
     parser.add_option("-t", "--title", dest="title", default=None,
                       help="chart title (optional)", metavar="TITLE")
     parser.add_option("--legends", default=None,
-                      help="Set legends for compare data sets.")
+                      help="Set legends for contender data sets.")
 
     (options, args) = parser.parse_args()
 
     if (len(args) < 2):
         raise RuntimeError("Need two or more CSV files.")
 
-    n_comparees = len(args) - 1
+    n_contenders = len(args) - 1
 
     if options.legends:
         categories = options.legends.split(",")
-        if len(categories) < n_comparees:
-            print(f"warning: --legends needs {n_comparees} values but "
+        if len(categories) < n_contenders:
+            print(f"warning: --legends needs {n_contenders} values but "
                   + f"only {len(categories)} were given.")
-            categories += ["MISSING LEGEND"] * (n_comparees - len(categories))
+            categories += ["MISSING LEGEND"] * (n_contenders - len(categories))
     else:
-        # Problems if more than 6 compare data sets are given.
-        categories = "123456"[:n_comparees]
+        # Problems if more than 6 contender data sets are given.
+        categories = "123456"[:n_contenders]
 
     benchmark_stat_list = [process_samples(arg) for arg in args]
 
@@ -148,18 +148,19 @@ def main():
     for name, numbers in benchmarks:
         times_to_speed(numbers)
 
-    # Sort by speed of the first set of compare numbers.
+    # Sort by speed by the first contender.
     benchmarks = sorted(benchmarks, key = lambda x: x[1][1])
 
     benchmarks = filter_outliers(benchmarks, 10)
 
-    # for name, numbers in benchmarks:
-    #     print(f"{name}", end='')
-    #     for n in numbers[1:]:
-    #         print(f" | {n:.2f}", end='')
-    #     print()
+    if False:
+        for name, numbers in benchmarks:
+            print(f"{name}", end='')
+            for n in numbers[1:]:
+                print(f" | {n:.2f}", end='')
+            print()
 
-    n_categories = n_comparees
+    n_categories = n_contenders
     numbers_by_category = {}
     for cat in categories:
         numbers_by_category[cat] = []
@@ -190,8 +191,6 @@ def main():
     xtick_locs = locs - 1 / n_categories / 2 + 0.5 * width
     ax.set_xticks(xtick_locs, [b[0] for b in benchmarks])
 
-    ax.legend(loc='upper left', ncols=n_categories)
-
     ax.margins(x=None, y=0.1)
 
     if True:
@@ -211,6 +210,16 @@ def main():
 
     if options.ylabel:
         plt.ylabel(options.ylabel)
+
+    if options.geomean and n_contenders > 1:
+        print("warning: --geomean with >1 contenders is not implemented.")
+    elif options.geomean:
+        g = geomean([x[1][1] for x in benchmarks])
+        s = f"Geomean = {g:.2f}"
+        print(s)
+        ax.axhline(g, ls='dashed', label=s)
+
+    ax.legend(loc='upper left', ncols=n_categories)
 
     plt.tight_layout()
 
